@@ -6,7 +6,7 @@ import "tailwindcss/tailwind.css";
 function Home() {
   return (
     <div
-      className="min-h-screen"
+      className=""
       style={{
         background:
           "linear-gradient(90deg, rgba(238,243,167,1) 0%, rgba(99,248,108,1) 35%, rgba(238,255,165,1) 100%)",
@@ -32,7 +32,7 @@ function Home() {
       </div>
 
       {/* Features Section */}
-      <section className="py-5">
+      <section className="py-5 px-5">
         <div className="container mx-auto px-4 text-center">
           <motion.h2
             className="text-3xl md:text-4xl font-bold"
@@ -76,7 +76,7 @@ function Home() {
       </section>
 
       {/* Testimonials Section */}
-      <section className="py-16">
+      <section className="py-16 px-5">
         <div className="container mx-auto px-4 text-center">
           <motion.h2
             className="text-3xl md:text-4xl font-bold"
