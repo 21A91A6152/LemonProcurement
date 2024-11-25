@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import bodyParser from 'body-parser';
 import nodemailer from 'nodemailer';
 import cors from 'cors';
-import customerdata from './modules/customer.js';
+import customerdata from './modules/Customer.js';
 
 var app = express();  
 app.use(bodyParser.urlencoded({extended:true}));

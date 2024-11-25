@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema
-let Customer =new Schema({
+let Customerschema =new Schema({
     username:{
         type:String ,
         required:true
@@ -19,4 +19,4 @@ let Customer =new Schema({
     }
 
 });
-export default mongoose.model("customerdata", Customer)
+export default mongoose.model("customerdata", Customerschema)
