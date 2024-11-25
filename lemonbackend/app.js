@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import bodyParser from 'body-parser';
 import nodemailer from 'nodemailer';
 import cors from 'cors';
-import customerdata from './modules/customer';
+import customerdata from './modules/customer.js';
 
 var app = express();  
 app.use(bodyParser.urlencoded({extended:true}));
@@ -20,7 +20,7 @@ mongoose.connect('mongodb+srv://21a91a6152:i1SlsdfXXTQ52UhB@cluster0.ywaxf.mongo
   
  
  
-var server = app.listen(5000) 
+var server = app.listen(4000) 
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
