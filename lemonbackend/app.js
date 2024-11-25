@@ -3,7 +3,7 @@ import mongoose from "mongoose";
 import bodyParser from 'body-parser';
 import nodemailer from 'nodemailer';
 import cors from 'cors';
-import customer from './modules/customer';
+import customerdata from './modules/customer';
 
 var app = express();  
 app.use(bodyParser.urlencoded({extended:true}));
@@ -31,13 +31,13 @@ app.post('/signup',async(req,res,next)=>{
     const {username,email,password,phone}=req.body.formData;
     let users
     try{
-      users = await  customer.findOne({ email: email });
+      users = await  customerdata.findOne({ email: email });
     }catch(err){
         return console.log(err)
     }
      
     if(!users){
-        const stud =new customer({
+        const stud =new customerdata({
             username,
             email,
             password,
@@ -130,7 +130,7 @@ app.post('/signup',async(req,res,next)=>{
   
 
 
-  // CUSTOMER LOGIN
+  // Customer LOGIN
 
  
 app.post('/login',async (req,res,next)=>{
@@ -139,7 +139,7 @@ app.post('/login',async (req,res,next)=>{
     const {email,password}=req.body.formDataL;
     let users;
     try{
-      users = await customer.findOne({ email: email });
+      users = await customerdata.findOne({ email: email });
     }catch(err){
         return console.log(err)
     }

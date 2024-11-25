@@ -19,4 +19,4 @@ let Customer =new Schema({
     }
 
 });
-export default mongoose.model("customerdata",Customer)
+export default mongoose.model("customerdata", Customer)
