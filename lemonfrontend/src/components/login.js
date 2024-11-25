@@ -20,7 +20,7 @@ function SignIn() {
     const handleLoginSubmit = async (e) => {
         e.preventDefault();
         try {
-            const response = await axios.post('http://localhost:5000/login', {formDataL });
+            const response = await axios.post('https://lemonprocurement.onrender.com/login', {formDataL });
             const { msg, email } = response.data;
 
             if (msg === "login successful") {
@@ -53,7 +53,7 @@ function SignIn() {
     const handleSignupSubmit = (e) => {
         e.preventDefault();
         
-        axios.post('http://localhost:5000/signup', {formData})
+        axios.post('https://lemonprocurement.onrender.com/signup', {formData})
             .then((res) => {
                 Swal.fire({
                     title: "Success",
