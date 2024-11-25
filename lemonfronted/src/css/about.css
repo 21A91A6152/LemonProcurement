@@ -1,0 +1,14 @@
+ 
+  
+  .faded-border-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    -webkit-mask-image: radial-gradient(circle, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 100%);
+    -webkit-mask-repeat: no-repeat;
+    -webkit-mask-position: center;
+    mask-image: radial-gradient(circle, rgba(0, 0, 0, 1) 80%, rgba(0, 0, 0, 0) 100%);
+    mask-repeat: no-repeat;
+    mask-position: center;
+  }
+  
