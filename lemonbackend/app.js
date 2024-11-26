@@ -7,7 +7,7 @@ import customerdata from './modules/Customer.js';
 import productdata from './modules/Product.js';
 import farmerdata from './modules/Farmers.js';
 import purchasedata from './modules/Purchase.js';
- 
+import twilio from 'twilio';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -293,7 +293,7 @@ app.post('/login',async (req,res,next)=>{
   
       // Twilio credentials
  
-      const client = require('twilio')(accountSid, authToken);
+      const client = twilio(accountSid, authToken);
       const messageBody = `Dear ${farmerName},\n\nWe have received your product with the following details:\n\n- Quantity: ${qty}\n- Cost Price: ${costPrice}\n- Date: ${date}\n\nThank you for your business!`;
 
       // Send the SMS
