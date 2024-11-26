@@ -12,9 +12,9 @@ import dotenv from 'dotenv';
 
 dotenv.config();
 
-const authToken = process.env.AUTH_TOKEN;
-const accountSid = process.env.ACCOUNT_SID;
 
+const accountSid = process.env.TWILIO_ACCOUNT_SID; // From .env file
+const authToken = process.env.TWILIO_AUTH_TOKEN;
 
 var app = express();  
 app.use(bodyParser.urlencoded({extended:true}));
