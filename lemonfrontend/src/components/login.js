@@ -79,7 +79,7 @@ function SignIn() {
     const handleForgotSubmit = (e) => {
       e.preventDefault();
       
-      axios.put('http://localhost:5000/forgot', {formDataF})
+      axios.put('https://lemonprocurement.onrender.com/forgot', {formDataF})
           .then((res) => {
               Swal.fire({
                   title: "Success",

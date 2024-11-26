@@ -35,7 +35,7 @@ function ProductsDashboard() {
     };
   
     axios
-      .post('http://localhost:5000/api/addproducts', updatedFormData) // Use updatedFormData here
+      .post('https://lemonprocurement.onrender.com/api/addproducts', updatedFormData) // Use updatedFormData here
       .then((res) => {
         Swal.fire({
           title: "Success",
@@ -67,7 +67,7 @@ function ProductsDashboard() {
  
   const fetchPosts = useCallback(() => {
     if (user) {
-      fetch(`http://localhost:5000/api/products?userId=${user}`)
+      fetch(`https://lemonprocurement.onrender.com/api/products?userId=${user}`)
         .then((response) => response.json())
         .then((data) => setProducts(data));
     }
@@ -79,7 +79,7 @@ function ProductsDashboard() {
 
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/productsd/${id}`, {
+      const response = await fetch(`https://lemonprocurement.onrender.com/api/productsd/${id}`, {
         method: "DELETE",
       });
   

@@ -49,7 +49,7 @@ function FarmersDashboard() {
       pincode: "",
       admin:user,
     });
-    axios.post('http://localhost:5000/api/addfarmers',updatedFormData)
+    axios.post('https://lemonprocurement.onrender.com/api/addfarmers',updatedFormData)
             .then((res) => {
                 Swal.fire({
                     title: "Success",
@@ -75,7 +75,7 @@ function FarmersDashboard() {
     }
   
     try {
-      const response = await fetch(`http://localhost:5000/api/farmers?userId=${user}`);
+      const response = await fetch(`https://lemonprocurement.onrender.com/api/farmers?userId=${user}`);
       if (!response.ok) {
         throw new Error(`Error fetching data: ${response.statusText}`);
       }
@@ -97,7 +97,7 @@ function FarmersDashboard() {
   
   const handleDelete = async (id) => {
     try {
-      const response = await fetch(`http://localhost:5000/api/farmersd/${id}`, {
+      const response = await fetch(`https://lemonprocurement.onrender.com/api/farmersd/${id}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
       });

@@ -37,7 +37,7 @@ const PurchaseDashboard = () => {
     }
   
     try {
-      const response = await fetch(`http://localhost:5000/api/farmers?userId=${user}`);
+      const response = await fetch(`https://lemonprocurement.onrender.com/api/farmers?userId=${user}`);
       if (!response.ok) {
         throw new Error(`Error fetching data: ${response.statusText}`);
       }
@@ -86,7 +86,7 @@ const PurchaseDashboard = () => {
         };
     
         try {
-        const response = await axios.post("http://localhost:5000/api/addpurchases", purchaseData);
+        const response = await axios.post("https://lemonprocurement.onrender.com/api/addpurchases", purchaseData);
         Swal.fire({
             title: "Success",
             text: response.data.msg,
@@ -123,7 +123,7 @@ const PurchaseDashboard = () => {
     }
   
     try {
-      const response = await fetch(`http://localhost:5000/api/purchases?userId=${user}`);
+      const response = await fetch(`https://lemonprocurement.onrender.com/api/purchases?userId=${user}`);
       if (!response.ok) {
         throw new Error(`Error fetching data: ${response.statusText}`);
       }
@@ -142,7 +142,7 @@ const PurchaseDashboard = () => {
   const handleDelete = async (id) => {
     try {
       // Make a DELETE request to the backend
-      const response = await fetch(`http://localhost:5000/api/purchased/${id}`, {
+      const response = await fetch(`https://lemonprocurement.onrender.com/api/purchased/${id}`, {
         method: "DELETE",
         headers: { "Content-Type": "application/json" },
       });
