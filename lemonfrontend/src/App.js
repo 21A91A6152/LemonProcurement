@@ -38,7 +38,7 @@
 
 // export default App;
 
-import React, { useState  } from "react";
+import React, { useState,useEffect  } from "react";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 import Home from "./components/Home";
@@ -49,6 +49,14 @@ import PurchaseDashboard from "./components/Purchase";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
 const App = () => {
+  const [user, setUser] = useState("");
+  useEffect(() => {
+    const userDataString = localStorage.getItem('userData');
+    if (userDataString) {
+      const userData = JSON.parse(userDataString);
+      setUser(userData);
+    }
+  }, []);
   const [isAuthenticated, setIsAuthenticated] = useState(
     Boolean(localStorage.getItem("userData"))
   );
@@ -72,9 +80,9 @@ const App = () => {
             <Navbar onLogout={handleLogout} />
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="/products" element={<ProductsDashboard />} />
-              <Route path="/vendors/farmers" element={<FarmersDashboard />} />
-              <Route path="/purchase" element={<PurchaseDashboard />} />
+              <Route path="/products" element={<ProductsDashboard user={user}/>} />
+              <Route path="/vendors/farmers" element={<FarmersDashboard user={user}/>} />
+              <Route path="/purchase" element={<PurchaseDashboard user={user}/>} />
               <Route path="*" element={<Navigate to="/" />} /> {/* Redirect invalid routes */}
             </Routes>
             <Footer />

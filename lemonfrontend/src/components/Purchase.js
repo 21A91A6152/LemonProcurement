@@ -317,10 +317,11 @@ import React, { useState, useEffect, useCallback } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 
-const PurchaseDashboard = () => {
+const PurchaseDashboard = (user) => {
+ 
   const [farmers, setFarmers] = useState([]);
   const [purchases, setPurchases] = useState([]);
-  const [user, setUser] = useState("");
+ 
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [newPurchase, setNewPurchase] = useState({
     farmerName: "",
@@ -332,24 +333,17 @@ const PurchaseDashboard = () => {
     admin: "",
   });
 
-  // Fetch user data from localStorage
-  useEffect(() => {
-    const userDataString = localStorage.getItem("userData");
-    if (userDataString) {
-      const userData = JSON.parse(userDataString);
-      setUser(userData);
-    }
-  }, []);
+ 
 
   const fetchPosts = useCallback(async () => {
-    if (!user) {
+    if (!user.user) {
       console.warn("User is not defined!");
       return;
     }
 
     try {
       const response = await fetch(
-        `https://lemonprocurement.onrender.com/api/farmers?userId=${user}`
+        `https://lemonprocurement.onrender.com/api/farmers?userId=${user.user}`
       );
       if (!response.ok) {
         throw new Error(`Error fetching data: ${response.statusText}`);
@@ -359,7 +353,7 @@ const PurchaseDashboard = () => {
     } catch (error) {
       console.error("Error fetching farmers data:", error);
     }
-  }, [user]);
+  }, [user.user]);
 
   useEffect(() => {
     fetchPosts();
@@ -394,7 +388,7 @@ const PurchaseDashboard = () => {
       return;
     }
 
-    if (!user) {
+    if (!user.user) {
       Swal.fire({
         title: "Error",
         text: "User data is not available. Please log in first.",
@@ -406,7 +400,7 @@ const PurchaseDashboard = () => {
     // Prepare the purchase data
     const purchaseData = {
       ...newPurchase,
-      admin: user,
+      admin: user.user,
     };
 
     try {
@@ -430,7 +424,7 @@ const PurchaseDashboard = () => {
         costPrice: "",
         date: new Date().toISOString().split("T")[0],
         product: "Lemon",
-        admin: "",
+        admin: user.user,
       });
     } catch (error) {
       console.error("Error adding purchase:", error);
@@ -443,14 +437,14 @@ const PurchaseDashboard = () => {
   };
 
   const fetchpurchases = useCallback(async () => {
-    if (!user) {
+    if (!user.user) {
       console.warn("User is not defined!");
       return;
     }
 
     try {
       const response = await fetch(
-        `https://lemonprocurement.onrender.com/api/purchases?userId=${user}`
+        `https://lemonprocurement.onrender.com/api/purchases?userId=${user.user}`
       );
       if (!response.ok) {
         throw new Error(`Error fetching data: ${response.statusText}`);
@@ -460,7 +454,7 @@ const PurchaseDashboard = () => {
     } catch (error) {
       console.error("Error fetching farmers data:", error);
     }
-  }, [user]);
+  }, [user.user]);
 
   useEffect(() => {
     fetchpurchases();

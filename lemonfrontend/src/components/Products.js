@@ -3,25 +3,19 @@ import axios from "axios";
 import Swal from 'sweetalert2';
 import {  motion } from "framer-motion";
 
-function ProductsDashboard() {
+function ProductsDashboard(user) {
   const [products, setProducts] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [user, setUser] = useState("");
+ 
   const [formData, setFormData] = useState({
     name: "",
     description: "",
     date: new Date().toISOString().split("T")[0], // Current system date
     uom: "KG",
-    admin: user,
+    admin: user.user,
   });
 
-  useEffect(() => {
-    const userDataString = localStorage.getItem('userData');
-    if (userDataString) {
-      const userData = JSON.parse(userDataString);
-      setUser(userData);
-    }
-  }, []);
+ 
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -31,7 +25,7 @@ function ProductsDashboard() {
     // Create a new object with the current user as admin
     const updatedFormData = {
       ...formData,
-      admin: user, // Use the current user value for the admin field
+      admin: user.user, // Use the current user value for the admin field
     };
   
     axios
@@ -50,7 +44,7 @@ function ProductsDashboard() {
           description: "",
           date: new Date().toISOString().split("T")[0],
           uom: "KG",
-          admin: user, // Reset with current user value
+          admin: user.user, // Reset with current user value
         });
       })
       .catch((error) => {
@@ -66,12 +60,12 @@ function ProductsDashboard() {
 
  
   const fetchPosts = useCallback(() => {
-    if (user) {
-      fetch(`https://lemonprocurement.onrender.com/api/products?userId=${user}`)
+    if (user.user) {
+      fetch(`https://lemonprocurement.onrender.com/api/products?userId=${user.user}`)
         .then((response) => response.json())
         .then((data) => setProducts(data));
     }
-  }, [user]);
+  }, [user.user]);
   useEffect(() => {
     fetchPosts();
   }, [fetchPosts]);

@@ -3,10 +3,10 @@ import axios from "axios";
 import Swal from 'sweetalert2';
 import { motion } from "framer-motion";
 
-function FarmersDashboard() {
+function FarmersDashboard(user) {
   const [farmers, setFarmers] = useState([]);
   const [showForm, setShowForm] = useState(false);
-  const [user, setUser] = useState("");
+ 
   const [formData, setFormData] = useState({
     firstName: "",
     surName: "",
@@ -19,13 +19,7 @@ function FarmersDashboard() {
     admin:'john'
   });
 
-  useEffect(() => {
-    const userDataString = localStorage.getItem('userData');
-    if (userDataString) {
-      const userData = JSON.parse(userDataString);
-      setUser(userData);
-    }
-  }, []);
+ 
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -35,7 +29,7 @@ function FarmersDashboard() {
   const handleAddFarmer = () => {
     const updatedFormData = {
         ...formData,
-        admin: user, // Use the current user value for the admin field
+        admin: user.user, // Use the current user value for the admin field
       };
    
     setFormData({
@@ -47,7 +41,7 @@ function FarmersDashboard() {
       state: "Andhra Pradesh",
       country: "India",
       pincode: "",
-      admin:user,
+      admin:user.user,
     });
     axios.post('https://lemonprocurement.onrender.com/api/addfarmers',updatedFormData)
             .then((res) => {
@@ -69,13 +63,13 @@ function FarmersDashboard() {
   };
  
   const fetchFarmers = useCallback(async () => {
-    if (!user) {
+    if (!user.user) {
       console.warn('User is not defined!');
       return;
     }
   
     try {
-      const response = await fetch(`https://lemonprocurement.onrender.com/api/farmers?userId=${user}`);
+      const response = await fetch(`https://lemonprocurement.onrender.com/api/farmers?userId=${user.user}`);
       if (!response.ok) {
         throw new Error(`Error fetching data: ${response.statusText}`);
       }
@@ -84,7 +78,7 @@ function FarmersDashboard() {
     } catch (error) {
       console.error('Error fetching farmers data:', error);
     }
-  }, [user]);
+  }, [user.user]);
   
   useEffect(() => {
     fetchFarmers();
