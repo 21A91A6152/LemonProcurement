@@ -7,11 +7,16 @@ import customerdata from './modules/Customer.js';
 import productdata from './modules/Product.js';
 import farmerdata from './modules/Farmers.js';
 import purchasedata from './modules/Purchase.js';
+import Twilio from 'twilio/lib/rest/Twilio.js';
 
 var app = express();  
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors())
 app.use(express.json())
+
+ 
+// Create a Twilio client
+ 
  
 
 
@@ -271,19 +276,44 @@ app.post('/login',async (req,res,next)=>{
 
   //add purchase
 
-  app.post('/api/addpurchases', async (req, res,next) => {
-    console.log(req.body)
+  app.post('/api/addpurchases', async (req, res, next) => {
     try {
-      const {farmerName,qty,costPrice,date,product,admin } = req.body;
-      const newPost = new purchasedata({farmerName,qty,costPrice,date,product,admin});
+      const { farmerName, qty, costPrice, date, product, admin, phone } = req.body;
+  
+      // Save the new purchase data
+      const newPost = new purchasedata({ farmerName, qty, costPrice, date, product, admin });
       await newPost.save();
+  
+      // Twilio credentials
+      const authToken = '2bf9016fb99b38a99ef383e26c27c606';
+      const accountSid = 'ACd3d9b6e12d10efc230d7ec9e39ea9b16';
+      const client = require('twilio')(accountSid, authToken);
+      const messageBody = `Dear ${farmerName},\n\nWe have received your product with the following details:\n\n- Quantity: ${qty}\n- Cost Price: ${costPrice}\n- Date: ${date}\n\nThank you for your business!`;
+
+      // Send the SMS
+      client.messages
+      
+        .create({
+          body:  messageBody,
+          from: '+16814774634',  // Your Twilio number
+          to: phone  // Use the phone number from the request body
+        })
+        .then(message => {
+          console.log('Message SID:', message.sid);  // Log message SID for debugging
+        })
+        .catch(error => {
+          console.error('Error sending SMS:', error.message);  // Log error if sending fails
+        });
+  
       res.status(201).json({ msg: "Farmer added successfully!", product: newPost });
+      console.log(phone);  // Debugging: log the phone number
+  
     } catch (error) {
       console.error("Error saving farmer:", error);
       res.status(500).json({ msg: "An error occurred while adding the farmer." });
     }
-     
   });
+  
 
    //get purchases
 

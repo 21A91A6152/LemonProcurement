@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
 
-const Navbar = () => {
+const Navbar = ({ onLogout }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [user, setUser] = useState("John Doe"); // Example user name
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
@@ -11,10 +11,8 @@ const Navbar = () => {
   const navigate = useNavigate();
 
   const handleLogout = () => {
-    localStorage.removeItem("userData");
-    setIsLoggedIn(false);
-    setUser(null);
-    navigate("/");
+    onLogout(); // Trigger the parent App's logout handler
+    navigate("/login");
   };
 
   useEffect(() => {
