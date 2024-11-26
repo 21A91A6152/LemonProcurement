@@ -18,7 +18,7 @@ const Navbar = () => {
   };
 
   useEffect(() => {
-    const userDataString = localStorage.getItem('userData');
+    const userDataString = localStorage.getItem("userData");
     if (userDataString) {
       const userData = JSON.parse(userDataString);
       setIsLoggedIn(true);
@@ -40,10 +40,18 @@ const Navbar = () => {
 
         {/* Desktop Menu */}
         <ul className="hidden md:flex space-x-6 items-center">
-            <li className="hover:text-gray-200 cursor-pointer"><Link to={'./'} className="hover:text-black cursor-pointer">Home</Link> </li>
-            <li className="hover:text-gray-200 cursor-pointer"><Link to={'./'} className="hover:text-black cursor-pointer">About</Link></li>
-            <li className="hover:text-gray-200 cursor-pointer"><Link to={'./'} className="hover:text-black cursor-pointer">Feature</Link></li>
-            <li className="hover:text-gray-200 cursor-pointer"><Link to={'./'} className="hover:text-black cursor-pointer">Contact</Link></li>
+          <li className="hover:text-gray-200 cursor-pointer">
+            <Link to="/" className="hover:text-black cursor-pointer">Home</Link>
+          </li>
+          <li className="hover:text-gray-200 cursor-pointer">
+            <Link to="/products" className="hover:text-black cursor-pointer">Products</Link>
+          </li>
+          <li className="hover:text-gray-200 cursor-pointer">
+            <Link to="/vendors/farmers" className="hover:text-black cursor-pointer">Farmers</Link>
+          </li>
+          <li className="hover:text-gray-200 cursor-pointer">
+            <Link to="/purchase" className="hover:text-black cursor-pointer">Purchase</Link>
+          </li>
           {isLoggedIn ? (
             <>
               <li>
@@ -77,44 +85,71 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Sidebar for Mobile */}
+      {/* Overlay and Sidebar for Mobile */}
       {isSidebarOpen && (
-        <div className="absolute top-0 left-0 w-full bg-green-700 md:hidden z-10">
-          <div><span className="text-xl font-bold px-5"> Lemon Procurement</span> <span className="px-3"><button onClick={toggleSidebar} className="text-2xl focus:outline-none">
-            <i className="fa-solid fa-bars"></i>
-          </button>
-        </span></div>
-          <ul className="flex flex-col space-y-4 px-4 py-6">
-            <li className="hover:text-black cursor-pointer text-center"><Link to={'./'}>Home</Link> </li>
-            <li className="hover:text-black cursor-pointer text-center"><Link to={'./'}>About</Link></li>
-            <li className="hover:text-black cursor-pointer text-center"><Link to={'./'}>Feature</Link></li>
-            <li className="hover:text-black cursor-pointer text-center"><Link to={'./'}>Contact</Link></li>
-            {isLoggedIn ? (
-              <>
-                <li className="font-medium text-lg">{user}</li>
-                <li>
-                  <button
-                    onClick={() => {
-                      handleLogout();
-                      toggleSidebar();
-                    }}
-                    className="w-full px-4 py-2 bg-white text-green-500 rounded hover:bg-green-100 transition"
-                  >
-                    Logout <i className="fa-solid fa-right-from-bracket"></i>
-                  </button>
-                </li>
-              </>
-            ) : (
+        <>
+          {/* Overlay */}
+          <div
+            className="fixed inset-0 bg-black bg-opacity-50 z-10"
+            onClick={toggleSidebar}
+          ></div>
+
+          {/* Sidebar */}
+          <div className="absolute top-0 left-0 w-3/4 bg-green-700 md:hidden z-20 h-full">
+            <div className="flex items-center justify-between px-4 py-3">
+              <span className="text-xl font-bold">Lemon Procurement</span>
+              <button onClick={toggleSidebar} className="text-2xl focus:outline-none">
+                <i className="fa-solid fa-times"></i>
+              </button>
+            </div>
+            <ul className="flex flex-col space-y-4 px-4 py-6">
               <li>
-                <Link to="/login" onClick={toggleSidebar}>
-                  <button className="w-full px-4 py-2 bg-white text-green-500 rounded hover:bg-green-100 transition">
-                    Sign In / Log In
-                  </button>
+                <Link to="/" className="hover:text-gray-200 cursor-pointer" onClick={toggleSidebar}>
+                  Home
                 </Link>
               </li>
-            )}
-          </ul>
-        </div>
+              <li>
+                <Link to="/products" className="hover:text-gray-200 cursor-pointer" onClick={toggleSidebar}>
+                  Products
+                </Link>
+              </li>
+              <li>
+                <Link to="/vendors/farmers" className="hover:text-gray-200 cursor-pointer" onClick={toggleSidebar}>
+                  Farmers
+                </Link>
+              </li>
+              <li>
+                <Link to="/purchase" className="hover:text-gray-200 cursor-pointer" onClick={toggleSidebar}>
+                  Purchase
+                </Link>
+              </li>
+              {isLoggedIn ? (
+                <>
+                  <li className="font-medium text-lg">{user}</li>
+                  <li>
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        toggleSidebar();
+                      }}
+                      className="w-full px-4 py-2 bg-white text-green-500 rounded hover:bg-green-100 transition"
+                    >
+                      Logout <i className="fa-solid fa-right-from-bracket"></i>
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <Link to="/login" onClick={toggleSidebar}>
+                    <button className="w-full px-4 py-2 bg-white text-green-500 rounded hover:bg-green-100 transition">
+                      Sign In / Log In
+                    </button>
+                  </Link>
+                </li>
+              )}
+            </ul>
+          </div>
+        </>
       )}
     </nav>
   );

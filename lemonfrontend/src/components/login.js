@@ -13,6 +13,11 @@ function SignIn() {
         'email':'',
         'password':'',
     }) 
+    const [formDataF,setFormdataF]=useState({
+      'email':'',
+      'password':'',
+      'confirmpassword':'',
+  }) 
     const [currentView, setCurrentView] = useState('login');
 
      
@@ -71,6 +76,27 @@ function SignIn() {
                 });
             });
     };
+    const handleForgotSubmit = (e) => {
+      e.preventDefault();
+      
+      axios.put('http://localhost:5000/forgot', {formDataF})
+          .then((res) => {
+              Swal.fire({
+                  title: "Success",
+                  text: res.data.msg,
+                  icon: "success"
+              });
+              setCurrentView('login')
+          })
+          .catch((error) => {
+              console.error("Error occurred during signup:", error);
+              Swal.fire({
+                  title: "Error",
+                  text: "An error occurred while signing up. Please try again later.",
+                  icon: "error"
+              });
+          });
+  };
 
     return (
         <div className="container mx-auto px-4 py-6">
@@ -130,15 +156,16 @@ function SignIn() {
                  Create Your Account
                </h1>
                <div className="space-y-5">
-                 <div className="grid md:grid-cols-2 gap-4">
+                  
                    <input
                      type="text"
                      placeholder="User Name"
                      className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
                      onChange={(e) => setFormData({ ...formData, username: e.target.value })}
                    />
+                  
                     
-                 </div>
+                  
                  <input
                    type="email"
                    placeholder="Email Address"
@@ -182,7 +209,57 @@ function SignIn() {
             )}
 
             {currentView === 'forgot' && (
-                <div className="text-center text-white">Forgot Password</div>
+                <div className="max-w-md mx-auto bg-gradient-to-br from-white to-gray-50 shadow-lg rounded-lg overflow-hidden p-8 md:p-12">
+                <h1 className="text-3xl font-extrabold text-center text-gray-800 mb-8">
+                  Change your Password
+                </h1>
+                <div className="space-y-5">
+                  <input
+                    type="email"
+                    placeholder="Email Address"
+                    className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+                    onChange={(e) => setFormdataF({ ...formDataF, email: e.target.value })}
+                  />
+                  <input
+                    type="password"
+                    placeholder="New Password"
+                    className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+                    onChange={(e) => setFormdataF({ ...formDataF, password: e.target.value })}
+                  />
+                  <input
+                    type="password"
+                    placeholder="Confirm  Password"
+                    className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+                    onChange={(e) => setFormdataF({ ...formDataF, confirmpassword: e.target.value })}
+                  />
+                </div>
+                <div className="mt-4">
+                  <button
+                    onClick={() => setCurrentView("login")}
+                    className="text-green-500 hover:text-green-600 font-medium hover:underline"
+                  >
+                    Login
+                  </button>
+                </div>
+                <div className="mt-8">
+                  <button
+                    type="button"
+                    className="w-full bg-green-500 text-white font-bold p-3 rounded-lg shadow-lg hover:bg-green-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+                    onClick={handleForgotSubmit}
+                  >
+                    Change Password
+                  </button>
+                </div>
+                <p className="mt-6 text-center text-gray-600">
+                  Not registered yet?{" "}
+                  <button
+                    onClick={() => setCurrentView("signup")}
+                    className="text-green-500 hover:text-green-600 font-medium hover:underline"
+                  >
+                    Create an account
+                  </button>
+                </p>
+              </div>
             )}
         </div>
     );

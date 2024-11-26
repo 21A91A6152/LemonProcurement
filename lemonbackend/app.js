@@ -4,11 +4,16 @@ import bodyParser from 'body-parser';
 import nodemailer from 'nodemailer';
 import cors from 'cors';
 import customerdata from './modules/Customer.js';
+import productdata from './modules/Product.js';
+import farmerdata from './modules/Farmers.js';
+import purchasedata from './modules/Purchase.js';
 
 var app = express();  
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(cors())
 app.use(express.json())
+ 
+
 
 mongoose.connect('mongodb+srv://21a91a6152:i1SlsdfXXTQ52UhB@cluster0.ywaxf.mongodb.net/Lemon?retryWrites=true&w=majority', {
     useNewUrlParser: true,
@@ -25,6 +30,8 @@ var server = app.listen(5000)
 app.get('/', (req, res) => {
     res.send('Hello World!')
   })
+
+  //Admin Signup
 
 app.post('/signup',async(req,res,next)=>{
     console.log(req.body.formData)
@@ -130,7 +137,7 @@ app.post('/signup',async(req,res,next)=>{
   
 
 
-  // Customer LOGIN
+  // Admin LOGIN
 
  
 app.post('/login',async (req,res,next)=>{
@@ -158,4 +165,144 @@ app.post('/login',async (req,res,next)=>{
      
   })
   
+  //Password change
+
+  app.put('/forgot', async (req, res, next)=>{
+    console.log(req.body.formDataF)
+    const {email,password,confirmpassword}=req.body.formDataF;
+    let users;
+    let stud;
+    try{
+      users = await customerdata.findOne({ email: email });
+    }catch(err){
+        return console.log(err)
+    }
+    console.log(users)
+    if(!users){
+      return res.status(200).json({msg:"email incorrect"})
+    }
+    else if(password!=confirmpassword){
+      return res.status(200).json({msg:"please enter correct password"})
+    }
+    else{
+        stud = await customerdata.findByIdAndUpdate(users._id,{
+          email,
+          password, 
+        });
+        return res.status(200).json({msg:"password updated successfully"})
+    }
+  })
+
+
+  //product Add
+
+  app.post('/api/addproducts', async (req, res, next) => {
+    try {
+      const { admin, date, description, name, uom } = req.body;
+      const newPost = new productdata({ admin, date, description, name, uom });
+      await newPost.save();
+      res.status(201).json({ msg: "Product added successfully!", product: newPost });
+    } catch (error) {
+      console.error("Error saving product:", error);
+      res.status(500).json({ msg: "An error occurred while adding the product." });
+    }
+  });
   
+
+  //get products
+
+  app.get('/api/products', async (req, res) => {
+    try {
+      const adminid = req.query.userId; // Get user ID from query parameters
+      console.log(adminid)
+      const products = await productdata.find({ admin: adminid }); // Fetch posts for the specific user
+      res.json(products);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server Error' });
+    }
+  });
+
+     // API to delete a products
+     app.delete('/api/productsd/:id', async (req, res) => {
+      const { id } = req.params;
+      await productdata.findByIdAndDelete(id);
+      res.status(204).send();
+    });
+  
+  
+  //Add Farmers
+
+  app.post('/api/addfarmers', async (req, res,next) => {
+    console.log(req.body)
+    try {
+      const {firstName,surName,phoneNumber,village,city,state,country,pincode,admin } = req.body;
+      const newPost = new farmerdata({firstName,surName,phoneNumber,village,city,state,country,pincode,admin});
+      await newPost.save();
+      res.status(201).json({ msg: "Farmer added successfully!", product: newPost });
+    } catch (error) {
+      console.error("Error saving farmer:", error);
+      res.status(500).json({ msg: "An error occurred while adding the farmer." });
+    }
+     
+  });
+
+  //get farmers
+
+  app.get('/api/farmers', async (req, res) => {
+    try {
+      const adminid = req.query.userId; // Get user ID from query parameters
+      console.log(adminid)
+      const posts = await farmerdata.find({ admin: adminid }); // Fetch posts for the specific user
+      res.json(posts);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server Error' });
+    }
+  });
+
+   // API to delete a farmer
+   app.delete('/api/farmersd/:id', async (req, res) => {
+    const { id } = req.params;
+    await farmerdata.findByIdAndDelete(id);
+    res.status(204).send();
+  });
+
+
+  //add purchase
+
+  app.post('/api/addpurchases', async (req, res,next) => {
+    console.log(req.body)
+    try {
+      const {farmerName,qty,costPrice,date,product,admin } = req.body;
+      const newPost = new purchasedata({farmerName,qty,costPrice,date,product,admin});
+      await newPost.save();
+      res.status(201).json({ msg: "Farmer added successfully!", product: newPost });
+    } catch (error) {
+      console.error("Error saving farmer:", error);
+      res.status(500).json({ msg: "An error occurred while adding the farmer." });
+    }
+     
+  });
+
+   //get purchases
+
+   app.get('/api/purchases', async (req, res) => {
+    try {
+      const adminid = req.query.userId; // Get user ID from query parameters
+      console.log(adminid)
+      const posts = await purchasedata.find({ admin: adminid }); // Fetch posts for the specific user
+      res.json(posts);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Server Error' });
+    }
+  });
+
+
+  // API to delete a purchase
+  app.delete('/api/purchased/:id', async (req, res) => {
+    const { id } = req.params;
+    await purchasedata.findByIdAndDelete(id);
+    res.status(204).send();
+  });
