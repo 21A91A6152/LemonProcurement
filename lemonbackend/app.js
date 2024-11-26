@@ -7,7 +7,13 @@ import customerdata from './modules/Customer.js';
 import productdata from './modules/Product.js';
 import farmerdata from './modules/Farmers.js';
 import purchasedata from './modules/Purchase.js';
-import Twilio from 'twilio/lib/rest/Twilio.js';
+ 
+
+require('dotenv').config();
+
+const authToken = process.env.AUTH_TOKEN;
+const accountSid = process.env.ACCOUNT_SID;
+
 
 var app = express();  
 app.use(bodyParser.urlencoded({extended:true}));
@@ -285,8 +291,7 @@ app.post('/login',async (req,res,next)=>{
       await newPost.save();
   
       // Twilio credentials
-      const authToken = '2bf9016fb99b38a99ef383e26c27c606';
-      const accountSid = 'ACd3d9b6e12d10efc230d7ec9e39ea9b16';
+ 
       const client = require('twilio')(accountSid, authToken);
       const messageBody = `Dear ${farmerName},\n\nWe have received your product with the following details:\n\n- Quantity: ${qty}\n- Cost Price: ${costPrice}\n- Date: ${date}\n\nThank you for your business!`;
 
