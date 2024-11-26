@@ -194,8 +194,8 @@ function FarmersDashboard() {
                 <div className="grid md:grid-cols-2 gap-4">
                   <input
                     type="text"
-                    name="Name"
-                    placeholder="First Name"
+                    name="firstName"
+                    placeholder="Name"
                     value={formData.firstName}
                     onChange={handleInputChange}
                     className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
