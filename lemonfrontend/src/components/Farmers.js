@@ -18,6 +18,26 @@ function FarmersDashboard(user) {
     pincode: "",
     admin:'john'
   });
+  const [errors, setErrors] = useState({});
+
+  
+
+  const validateForm = () => {
+    let validationErrors = {};
+
+    if (!formData.firstName.trim()) validationErrors.firstName = "Name is required.";
+    if (!formData.surName.trim()) validationErrors.surName = "Sur Name is required.";
+    if (!formData.phoneNumber.match(/^\d{10}$/)) validationErrors.phoneNumber = "Phone Number must be 10 digits.";
+    if (!formData.village.trim()) validationErrors.village = "Village is required.";
+    if (!formData.city.trim()) validationErrors.city = "City is required.";
+    if (!formData.state) validationErrors.state = "State is required.";
+    if (!formData.country) validationErrors.country = "Country is required.";
+    if (!formData.pincode.match(/^\d{6}$/)) validationErrors.pincode = "Pincode must be 6 digits.";
+
+    setErrors(validationErrors);
+
+    return Object.keys(validationErrors).length === 0; // Return true if no errors
+  };
 
  
 
@@ -43,6 +63,7 @@ function FarmersDashboard(user) {
       pincode: "",
       admin:user.user,
     });
+    if(validateForm()){
     axios.post('https://lemonprocurement.onrender.com/api/addfarmers',updatedFormData)
             .then((res) => {
                 Swal.fire({
@@ -61,6 +82,7 @@ function FarmersDashboard(user) {
                     icon: "error"
                 });
             });
+          }
   };
  
   const fetchFarmers = useCallback(async () => {
@@ -184,133 +206,124 @@ function FarmersDashboard(user) {
             className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center"
           >
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-              <h2 className="text-xl font-bold mb-4">Add Farmer</h2>
-              <div className="space-y-5">
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="firstName"
-                      placeholder="Name"
-                      value={formData.firstName}
-                      onChange={handleInputChange}
-                      className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
-                      required
-                    />
-                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
-                  </div>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="surName"
-                      placeholder="Sur Name"
-                      value={formData.surName}
-                      onChange={handleInputChange}
-                      className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
-                      required
-                    />
-                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
-                  </div>
-                </div>
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="phoneNumber"
-                    placeholder="Phone Number"
-                    value={formData.phoneNumber}
-                    onChange={handleInputChange}
-                    className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    required
-                  />
-                  <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
-                </div>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="village"
-                      placeholder="Village"
-                      value={formData.village}
-                      onChange={handleInputChange}
-                      className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
-                      required
-                    />
-                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
-                  </div>
-                  <div className="relative">
-                    <input
-                      type="text"
-                      name="city"
-                      placeholder="City"
-                      value={formData.city}
-                      onChange={handleInputChange}
-                      className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
-                      required
-                    />
-                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
-                  </div>
-                </div>
-                <div className="grid md:grid-cols-2 gap-4">
-                  <div className="relative">
-                    <select
-                      name="state"
-                      value={formData.state}
-                      onChange={handleInputChange}
-                      className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
-                      required
-                    >
-                      <option value="">Select State</option>
-                      <option value="Andhra Pradesh">Andhra Pradesh</option>
-                      <option value="Telangana">Telangana</option>
-                      <option value="Karnataka">Karnataka</option>
-                    </select>
-                    <span className="absolute top-1/4 right-2 transform -translate-y-1/2 text-red-500">*</span>
-                  </div>
-                  <div className="relative">
-                    <select
-                      name="country"
-                      value={formData.country}
-                      onChange={handleInputChange}
-                      className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
-                      required
-                    >
-                      <option value="">Select Country</option>
-                      <option value="India">India</option>
-                      <option value="USA">USA</option>
-                      <option value="Canada">Canada</option>
-                    </select>
-                    <span className="absolute top-1/4 right-2 transform -translate-y-1/2 text-red-500">*</span>
-                  </div>
-                </div>
-                <div className="relative">
-                  <input
-                    type="text"
-                    name="pincode"
-                    placeholder="Pincode"
-                    value={formData.pincode}
-                    onChange={handleInputChange}
-                    className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
-                    required
-                  />
-                  <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
-                </div>
-                <div className="flex justify-end space-x-4">
-                  <button
-                    onClick={() => setShowForm(false)}
-                    className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition"
-                  >
-                    Cancel
-                  </button>
-                  <button
-                    onClick={handleAddFarmer}
-                    className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
-                  >
-                    Add
-                  </button>
-                </div>
-              </div>
-
-            </div> 
+      <h2 className="text-xl font-bold mb-4">Add Farmer</h2>
+      <div className="space-y-5">
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="relative">
+            <input
+              type="text"
+              name="firstName"
+              placeholder="Name"
+              value={formData.firstName}
+              onChange={handleInputChange}
+              className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
+          </div>
+          <div className="relative">
+            <input
+              type="text"
+              name="surName"
+              placeholder="Sur Name"
+              value={formData.surName}
+              onChange={handleInputChange}
+              className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            {errors.surName && <p className="text-red-500 text-sm">{errors.surName}</p>}
+          </div>
+        </div>
+        <div className="relative">
+          <input
+            type="text"
+            name="phoneNumber"
+            placeholder="Phone Number"
+            value={formData.phoneNumber}
+            onChange={handleInputChange}
+            className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          {errors.phoneNumber && <p className="text-red-500 text-sm">{errors.phoneNumber}</p>}
+        </div>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="relative">
+            <input
+              type="text"
+              name="village"
+              placeholder="Village"
+              value={formData.village}
+              onChange={handleInputChange}
+              className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            {errors.village && <p className="text-red-500 text-sm">{errors.village}</p>}
+          </div>
+          <div className="relative">
+            <input
+              type="text"
+              name="city"
+              placeholder="City"
+              value={formData.city}
+              onChange={handleInputChange}
+              className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
+            />
+            {errors.city && <p className="text-red-500 text-sm">{errors.city}</p>}
+          </div>
+        </div>
+        <div className="grid md:grid-cols-2 gap-4">
+          <div className="relative">
+            <select
+              name="state"
+              value={formData.state}
+              onChange={handleInputChange}
+              className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              <option value="">Select State</option>
+              <option value="Andhra Pradesh">Andhra Pradesh</option>
+              <option value="Telangana">Telangana</option>
+              <option value="Karnataka">Karnataka</option>
+            </select>
+            {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>}
+          </div>
+          <div className="relative">
+            <select
+              name="country"
+              value={formData.country}
+              onChange={handleInputChange}
+              className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
+            >
+              <option value="">Select Country</option>
+              <option value="India">India</option>
+              <option value="USA">USA</option>
+              <option value="Canada">Canada</option>
+            </select>
+            {errors.country && <p className="text-red-500 text-sm">{errors.country}</p>}
+          </div>
+        </div>
+        <div className="relative">
+          <input
+            type="text"
+            name="pincode"
+            placeholder="Pincode"
+            value={formData.pincode}
+            onChange={handleInputChange}
+            className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
+          />
+          {errors.pincode && <p className="text-red-500 text-sm">{errors.pincode}</p>}
+        </div>
+        <div className="flex justify-end space-x-4">
+          <button
+            onClick={() => setShowForm(false)}
+            className="bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition"
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleAddFarmer}
+            className="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition"
+          >
+            Add
+          </button>
+        </div>
+      </div>
+    </div>
           </motion.div>
         )}
       </div>
@@ -319,3 +332,4 @@ function FarmersDashboard(user) {
 }
 
 export default FarmersDashboard;
+

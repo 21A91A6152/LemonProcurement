@@ -333,7 +333,18 @@ const PurchaseDashboard = (user) => {
     admin: "",
   });
 
- 
+  const [errors, setErrors] = useState({});
+
+  const validateForm = () => {
+    const newErrors = {};
+  
+    if (!newPurchase.farmerName) newErrors.farmerName = "Farmer name is required.";
+    if (!newPurchase.qty || newPurchase.qty <= 0) newErrors.qty = "Quantity must be greater than 0.";
+    if (!newPurchase.costPrice || newPurchase.costPrice <= 0) newErrors.costPrice = "Cost price must be greater than 0.";
+  
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0; // Return true if no errors
+  };
 
   const fetchPosts = useCallback(async () => {
     if (!user.user) {
@@ -404,28 +415,30 @@ const PurchaseDashboard = (user) => {
     };
 
     try {
-      const response = await axios.post(
-        "https://lemonprocurement.onrender.com/api/addpurchases",
-        purchaseData
-      );
-      Swal.fire({
-        title: "Success",
-        text: response.data.msg,
-        icon: "success",
-      });
+        if(validateForm()){
+          const response = await axios.post(
+            "https://lemonprocurement.onrender.com/api/addpurchases",
+            purchaseData
+          );
+          Swal.fire({
+            title: "Success",
+            text: response.data.msg,
+            icon: "success",
+          });
 
-      // Close the modal and reset the purchase form
-      setIsModalOpen(false);
-      fetchpurchases();
-      setNewPurchase({
-        farmerName: "",
-        phone: "",
-        qty: "",
-        costPrice: "",
-        date: new Date().toISOString().split("T")[0],
-        product: "Lemon",
-        admin: user.user,
-      });
+          // Close the modal and reset the purchase form
+          setIsModalOpen(false);
+          fetchpurchases();
+          setNewPurchase({
+            farmerName: "",
+            phone: "",
+            qty: "",
+            costPrice: "",
+            date: new Date().toISOString().split("T")[0],
+            product: "Lemon",
+            admin: user.user,
+          });
+        }
     } catch (error) {
       console.error("Error adding purchase:", error);
       Swal.fire({
@@ -548,27 +561,35 @@ const PurchaseDashboard = (user) => {
 
             {/* Form */}
             <div className="space-y-4">
-              <div>
-                <label className="block font-medium">Farmer Name  <span className="text-red-500">*</span></label>
-                <select
-                  name="farmerName"
-                  value={newPurchase.farmerName}
-                  onChange={handleFarmerChange}
-                  className="w-full px-4 py-2 border rounded"
-                >
-                  <option value="" disabled required>
-                    Select Farmer
+            <div>
+              <label className="block font-medium">
+                Farmer Name <span className="text-red-500">*</span>
+              </label>
+              <select
+                name="farmerName"
+                value={newPurchase.farmerName}
+                onChange={handleFarmerChange}
+                className={`w-full px-4 py-2 border rounded ${
+                  errors.farmerName ? "border-red-500" : ""
+                }`}
+              >
+                <option value="" disabled>
+                  Select Farmer
+                </option>
+                {farmers.map((farmer) => (
+                  <option
+                    key={farmer.id}
+                    value={`${farmer.surName} ${farmer.firstName}`}
+                  >
+                    {farmer.surName} {farmer.firstName}
                   </option>
-                  {farmers.map((farmer) => (
-                    <option
-                      key={farmer.id}
-                      value={`${farmer.surName} ${farmer.firstName}`}
-                    >
-                      {farmer.surName} {farmer.firstName}
-                    </option>
-                  ))}
-                </select>
-              </div>
+                ))}
+              </select>
+              {errors.farmerName && (
+                <p className="text-red-500 text-sm">{errors.farmerName}</p>
+              )}
+            </div>
+
               <div>
                 <label className="block font-medium">Phone Number  <span className="text-red-500">*</span></label>
                 <input
@@ -580,26 +601,36 @@ const PurchaseDashboard = (user) => {
                 />
               </div>
               <div>
-                <label className="block font-medium">Qty  <span className="text-red-500">*</span></label>
+                <label className="block font-medium">
+                  Qty <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="number"
                   name="qty"
                   value={newPurchase.qty}
                   onChange={handleInputChange}
-                  className="w-full px-4 py-2 border rounded"
+                  className={`w-full px-4 py-2 border rounded ${
+                    errors.qty ? "border-red-500" : ""
+                  }`}
                   required
                 />
+                {errors.qty && <p className="text-red-500 text-sm">{errors.qty}</p>}
               </div>
               <div>
-                <label className="block font-medium">Cost Price  <span className="text-red-500">*</span></label>
+                <label className="block font-medium">
+                  Cost Price <span className="text-red-500">*</span>
+                </label>
                 <input
                   type="number"
                   name="costPrice"
                   value={newPurchase.costPrice}
                   onChange={handleInputChange}
+                  className={`w-full px-4 py-2 border rounded ${
+                    errors.costPrice ? "border-red-500" : ""
+                  }`}
                   required
-                  className="w-full px-4 py-2 border rounded"
                 />
+                {errors.costPrice && <p className="text-red-500 text-sm">{errors.costPrice}</p>}
               </div>
               <div>
                 <label className="block font-medium">Date  <span className="text-red-500">*</span></label>
