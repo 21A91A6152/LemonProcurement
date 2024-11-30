@@ -106,19 +106,28 @@ function SignIn() {
                   Login to Your Account
                 </h1>
                 <div className="space-y-5">
-                  <input
-                    type="email"
-                    placeholder="Email Address"
-                    className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
-                    onChange={(e) => setFormdataL({ ...formDataL, email: e.target.value })}
-                  />
-                  <input
-                    type="password"
-                    placeholder="Password"
-                    className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
-                    onChange={(e) => setFormdataL({ ...formDataL, password: e.target.value })}
-                  />
+                  <div className="relative">
+                    <input
+                      type="email"
+                      placeholder="Email Address"
+                      className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+                      onChange={(e) => setFormdataL({ ...formDataL, email: e.target.value })}
+                      required
+                    />
+                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="password"
+                      placeholder="Password"
+                      className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+                      onChange={(e) => setFormdataL({ ...formDataL, password: e.target.value })}
+                      required
+                    />
+                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
+                  </div>
                 </div>
+
                 <div className="mt-4">
                   <button
                     onClick={() => setCurrentView("forgot")}
@@ -152,44 +161,58 @@ function SignIn() {
 
             {currentView === 'signup' && (
                <div className="max-w-md mx-auto bg-gradient-to-br from-white to-gray-50 shadow-lg rounded-lg overflow-hidden p-8 md:p-12">
-               <h1 className="text-3xl font-extrabold text-center text-gray-800 mb-8">
-                 Create Your Account
-               </h1>
-               <div className="space-y-5">
-                  
-                   <input
-                     type="text"
-                     placeholder="User Name"
-                     className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
-                     onChange={(e) => setFormData({ ...formData, username: e.target.value })}
-                   />
-                  
-                    
-                  
-                 <input
-                   type="email"
-                   placeholder="Email Address"
-                   className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
-                   onChange={(e) => setFormData({ ...formData, email: e.target.value })}
-                 />
-                 <input
-                   type="text"
-                   placeholder="Phone Number"
-                   className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
-                   onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
-                 />
-                 <input
-                   type="password"
-                   placeholder="Password"
-                   className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
-                   onChange={(e) => setFormData({ ...formData, password: e.target.value })}
-                 />
-               </div>
+                  <h1 className="text-3xl font-extrabold text-center text-gray-800 mb-8">
+                    Create Your Account
+                  </h1>
+                  <div className="space-y-5">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="User Name"
+                      className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+                      onChange={(e) => setFormData({ ...formData, username: e.target.value })}
+                      required
+                    />
+                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="email"
+                      placeholder="Email Address"
+                      className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+                      onChange={(e) => setFormData({ ...formData, email: e.target.value })}
+                      required
+                    />
+                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      placeholder="Phone Number"
+                      className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+                      onChange={(e) => setFormData({ ...formData, phone: e.target.value })}
+                      required
+                    />
+                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="password"
+                      placeholder="Password"
+                      className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+                      onChange={(e) => setFormData({ ...formData, password: e.target.value })}
+                      required
+                    />
+                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
+                  </div>
+                </div>
+
                <div className="mt-8">
                  <button
                    type="button"
                    className="w-full bg-green-500 text-white font-bold p-3 rounded-lg shadow-lg hover:bg-green-600 transition duration-300 focus:outline-none focus:ring-2 focus:ring-green-400"
                    onClick={handleSignupSubmit}
+                   required
                  >
                    Create Your Account
                  </button>
@@ -214,25 +237,38 @@ function SignIn() {
                   Change your Password
                 </h1>
                 <div className="space-y-5">
-                  <input
-                    type="email"
-                    placeholder="Email Address"
-                    className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
-                    onChange={(e) => setFormdataF({ ...formDataF, email: e.target.value })}
-                  />
-                  <input
-                    type="password"
-                    placeholder="New Password"
-                    className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
-                    onChange={(e) => setFormdataF({ ...formDataF, password: e.target.value })}
-                  />
-                  <input
-                    type="password"
-                    placeholder="Confirm  Password"
-                    className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
-                    onChange={(e) => setFormdataF({ ...formDataF, confirmpassword: e.target.value })}
-                  />
+                  <div className="relative">
+                    <input
+                      type="email"
+                      placeholder="Email Address"
+                      className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+                      onChange={(e) => setFormdataF({ ...formDataF, email: e.target.value })}
+                      required
+                    />
+                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="password"
+                      placeholder="New Password"
+                      className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+                      onChange={(e) => setFormdataF({ ...formDataF, password: e.target.value })}
+                      required
+                    />
+                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="password"
+                      placeholder="Confirm Password"
+                      className="w-full p-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-green-400"
+                      onChange={(e) => setFormdataF({ ...formDataF, confirmpassword: e.target.value })}
+                      required
+                    />
+                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
+                  </div>
                 </div>
+
                 <div className="mt-4">
                   <button
                     onClick={() => setCurrentView("login")}

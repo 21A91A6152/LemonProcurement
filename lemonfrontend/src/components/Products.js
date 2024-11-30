@@ -159,7 +159,7 @@ function ProductsDashboard(user) {
               <h2 className="text-xl font-bold mb-4">Add Product</h2>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-gray-700">Product Name</label>
+                  <label className="block text-gray-700">Product Name  <span className="text-red-500">*</span></label>
                   <input
                     type="text"
                     name="name"
@@ -170,7 +170,7 @@ function ProductsDashboard(user) {
                   />
                 </div>
                 <div>
-                  <label className="block text-gray-700">Description</label>
+                  <label className="block text-gray-700">Description  <span className="text-red-500">*</span></label>
                   <textarea
                     name="description"
                     value={formData.description}
@@ -180,7 +180,7 @@ function ProductsDashboard(user) {
                   ></textarea>
                 </div>
                 <div>
-                  <label className="block text-gray-700">Unit of Measure</label>
+                  <label className="block text-gray-700">Unit of Measure  <span className="text-red-500">*</span></label>
                   <select
                     name="uom"
                     value={formData.uom}
@@ -192,7 +192,7 @@ function ProductsDashboard(user) {
                   </select>
                 </div>
                 <div>
-                  <label className="block text-gray-700">Create Date</label>
+                  <label className="block text-gray-700">Create Date  <span className="text-red-500">*</span></label>
                   <input
                     type="text"
                     name="date"

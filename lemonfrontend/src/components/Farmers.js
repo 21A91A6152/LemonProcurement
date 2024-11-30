@@ -51,6 +51,7 @@ function FarmersDashboard(user) {
                     icon: "success"
                 });
                 setShowForm(false);
+                fetchFarmers()
             })
             .catch((error) => {
                 console.error("Error occurred during signup:", error);
@@ -186,78 +187,113 @@ function FarmersDashboard(user) {
               <h2 className="text-xl font-bold mb-4">Add Farmer</h2>
               <div className="space-y-5">
                 <div className="grid md:grid-cols-2 gap-4">
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="firstName"
+                      placeholder="Name"
+                      value={formData.firstName}
+                      onChange={handleInputChange}
+                      className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      required
+                    />
+                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="surName"
+                      placeholder="Sur Name"
+                      value={formData.surName}
+                      onChange={handleInputChange}
+                      className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      required
+                    />
+                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
+                  </div>
+                </div>
+                <div className="relative">
                   <input
                     type="text"
-                    name="firstName"
-                    placeholder="Name"
-                    value={formData.firstName}
+                    name="phoneNumber"
+                    placeholder="Phone Number"
+                    value={formData.phoneNumber}
                     onChange={handleInputChange}
                     className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    required
                   />
-                <input
-                  type="text"
-                  name="surName"
-                  placeholder="Sur Name"
-                  value={formData.surName}
-                  onChange={handleInputChange}
-                  className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
-                /></div>
-                <input
-                  type="text"
-                  name="phoneNumber"
-                  placeholder="Phone Number"
-                  value={formData.phoneNumber}
-                  onChange={handleInputChange}
-                  className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
-                <div className="grid md:grid-cols-2 gap-4">
-                  <input
-                    type="text"
-                    name="village"
-                    placeholder="Village"
-                    value={formData.village}
-                    onChange={handleInputChange}
-                    className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  />
-                  <input
-                    type="text"
-                    name="city"
-                    placeholder="City"
-                    value={formData.city}
-                    onChange={handleInputChange}
-                    className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  />
+                  <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
                 </div>
                 <div className="grid md:grid-cols-2 gap-4">
-                  <select
-                    name="state"
-                    value={formData.state}
-                    onChange={handleInputChange}
-                    className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  >
-                    <option value="Andhra Pradesh">Andhra Pradesh</option>
-                    <option value="Telangana">Telangana</option>
-                    <option value="Karnataka">Karnataka</option>
-                  </select>
-                  <select
-                    name="country"
-                    value={formData.country}
-                    onChange={handleInputChange}
-                    className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  >
-                    <option value="India">India</option>
-                    <option value="USA">USA</option>
-                    <option value="Canada">Canada</option>
-                  </select>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="village"
+                      placeholder="Village"
+                      value={formData.village}
+                      onChange={handleInputChange}
+                      className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      required
+                    />
+                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
+                  </div>
+                  <div className="relative">
+                    <input
+                      type="text"
+                      name="city"
+                      placeholder="City"
+                      value={formData.city}
+                      onChange={handleInputChange}
+                      className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      required
+                    />
+                    <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
+                  </div>
                 </div>
-                <input
-                  type="text"
-                  name="pincode"
-                  placeholder="Pincode"
-                  value={formData.pincode}
-                  onChange={handleInputChange}
-                  className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
-                />
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="relative">
+                    <select
+                      name="state"
+                      value={formData.state}
+                      onChange={handleInputChange}
+                      className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      required
+                    >
+                      <option value="">Select State</option>
+                      <option value="Andhra Pradesh">Andhra Pradesh</option>
+                      <option value="Telangana">Telangana</option>
+                      <option value="Karnataka">Karnataka</option>
+                    </select>
+                    <span className="absolute top-1/4 right-2 transform -translate-y-1/2 text-red-500">*</span>
+                  </div>
+                  <div className="relative">
+                    <select
+                      name="country"
+                      value={formData.country}
+                      onChange={handleInputChange}
+                      className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                      required
+                    >
+                      <option value="">Select Country</option>
+                      <option value="India">India</option>
+                      <option value="USA">USA</option>
+                      <option value="Canada">Canada</option>
+                    </select>
+                    <span className="absolute top-1/4 right-2 transform -translate-y-1/2 text-red-500">*</span>
+                  </div>
+                </div>
+                <div className="relative">
+                  <input
+                    type="text"
+                    name="pincode"
+                    placeholder="Pincode"
+                    value={formData.pincode}
+                    onChange={handleInputChange}
+                    className="w-full p-3 rounded-lg border focus:outline-none focus:ring-2 focus:ring-blue-400"
+                    required
+                  />
+                  <span className="absolute top-1/2 right-2 transform -translate-y-1/2 text-red-500">*</span>
+                </div>
                 <div className="flex justify-end space-x-4">
                   <button
                     onClick={() => setShowForm(false)}
@@ -273,6 +309,7 @@ function FarmersDashboard(user) {
                   </button>
                 </div>
               </div>
+
             </div> 
           </motion.div>
         )}

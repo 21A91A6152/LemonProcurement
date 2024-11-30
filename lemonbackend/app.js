@@ -286,15 +286,17 @@ app.post('/login',async (req,res,next)=>{
   app.post('/api/addpurchases', async (req, res, next) => {
     try {
       const { farmerName, qty, costPrice, date, product, admin, phone } = req.body;
+      const TotalAmount=qty*costPrice;
   
       // Save the new purchase data
-      const newPost = new purchasedata({ farmerName, qty, costPrice, date, product, admin });
+      const newPost = new purchasedata({ farmerName, qty, costPrice,TotalAmount, date, product, admin });
       await newPost.save();
   
       // Twilio credentials
  
       const client = twilio(accountSid, authToken);
-      const messageBody = `Dear ${farmerName},\n\nWe have received your product with the following details:\n\n- Quantity: ${qty}\n- Cost Price: ${costPrice}\n- Date: ${date}\n\nThank you for your business!`;
+      const messageBody = `Dear ${farmerName},\n\nWe have received your ${product} with the following details:\n\n- Quantity: ${qty}\n- Cost Price: ₹${costPrice}\n- Total Amount: ₹\u0332${[...TotalAmount.toString()].join("\u0332")}\n- Date: ${date}\n\nThank you for visiting UMA Lemon Market!`;
+
 
       // Send the SMS
       client.messages

@@ -505,7 +505,8 @@ const PurchaseDashboard = (user) => {
             <tr>
               <th className="px-4 py-2 text-left">Farmer Name</th>
               <th className="px-4 py-2 text-left">Qty</th>
-              <th className="px-4 py-2 text-left">Cost Price</th>
+              <th className="px-4 py-2 text-left">Cost Price(&#8377;)</th>
+              <th className="px-4 py-2 text-left">Amount(&#8377;)</th>
               <th className="px-4 py-2 text-left">Date</th>
               <th className="px-4 py-2 text-left">Product</th>
               <th className="px-4 py-2 text-left">Edit</th>
@@ -516,7 +517,8 @@ const PurchaseDashboard = (user) => {
               <tr key={index} className="border-t">
                 <td className="px-4 py-2">{purchase.farmerName}</td>
                 <td className="px-4 py-2">{purchase.qty}</td>
-                <td className="px-4 py-2">{purchase.costPrice}</td>
+                <td className="px-4 py-2">&#8377;{purchase.costPrice}</td>
+                <td className="px-4 py-2">&#8377;{purchase.TotalAmount}</td>
                 <td className="px-4 py-2">{purchase.date}</td>
                 <td className="px-4 py-2">{purchase.product}</td>
                 <button
@@ -547,14 +549,14 @@ const PurchaseDashboard = (user) => {
             {/* Form */}
             <div className="space-y-4">
               <div>
-                <label className="block font-medium">Farmer Name</label>
+                <label className="block font-medium">Farmer Name  <span className="text-red-500">*</span></label>
                 <select
                   name="farmerName"
                   value={newPurchase.farmerName}
                   onChange={handleFarmerChange}
                   className="w-full px-4 py-2 border rounded"
                 >
-                  <option value="" disabled>
+                  <option value="" disabled required>
                     Select Farmer
                   </option>
                   {farmers.map((farmer) => (
@@ -568,7 +570,7 @@ const PurchaseDashboard = (user) => {
                 </select>
               </div>
               <div>
-                <label className="block font-medium">Phone Number</label>
+                <label className="block font-medium">Phone Number  <span className="text-red-500">*</span></label>
                 <input
                   type="text"
                   name="phone"
@@ -578,27 +580,29 @@ const PurchaseDashboard = (user) => {
                 />
               </div>
               <div>
-                <label className="block font-medium">Qty</label>
+                <label className="block font-medium">Qty  <span className="text-red-500">*</span></label>
                 <input
                   type="number"
                   name="qty"
                   value={newPurchase.qty}
                   onChange={handleInputChange}
                   className="w-full px-4 py-2 border rounded"
+                  required
                 />
               </div>
               <div>
-                <label className="block font-medium">Cost Price</label>
+                <label className="block font-medium">Cost Price  <span className="text-red-500">*</span></label>
                 <input
                   type="number"
                   name="costPrice"
                   value={newPurchase.costPrice}
                   onChange={handleInputChange}
+                  required
                   className="w-full px-4 py-2 border rounded"
                 />
               </div>
               <div>
-                <label className="block font-medium">Date</label>
+                <label className="block font-medium">Date  <span className="text-red-500">*</span></label>
                 <input
                   type="text"
                   name="date"
@@ -608,7 +612,7 @@ const PurchaseDashboard = (user) => {
                 />
               </div>
               <div>
-                <label className="block font-medium">Product</label>
+                <label className="block font-medium">Product  <span className="text-red-500">*</span></label>
                 <input
                   type="text"
                   name="product"

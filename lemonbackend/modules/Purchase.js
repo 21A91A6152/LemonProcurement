@@ -15,6 +15,10 @@ let Purchaseschema = new Schema({
         type: String,
         required: true,
     },
+    TotalAmount: {
+        type: String,
+        required: true,
+    },
     date: {
         type: String, // Change to String to store "YYYY-MM-DD"
         required: true,
