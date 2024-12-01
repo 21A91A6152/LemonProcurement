@@ -93,7 +93,7 @@ function SignIn() {
           e.preventDefault();
         
           // Validate login form
-          if (validateloginForm()) {
+          
             try {
               // Make POST request to the login endpoint
               const response = await axios.post('https://lemonprocurement.onrender.com/login', formDataL);
@@ -131,7 +131,7 @@ function SignIn() {
                 text: "An error occurred while logging in. Please try again later.",
                 icon: "error",
               });
-            }
+            
           }
         };
         

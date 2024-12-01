@@ -155,7 +155,7 @@ app.post('/signup',async(req,res,next)=>{
 app.post('/login',async (req,res,next)=>{
     console.log(req.body.formDataL)
    
-    const {email,password}=req.body.formDataL;
+    const {email,password}=req.body;
     let users;
     try{
       users = await customerdata.findOne({ email: email });
