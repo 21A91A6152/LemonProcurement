@@ -46,8 +46,8 @@ app.get('/', (req, res) => {
   //Admin Signup
 
 app.post('/signup',async(req,res,next)=>{
-    console.log(req.body.formData)
-    const {username,email,password,phone}=req.body.formData;
+    console.log(req.body)
+    const {username,email,password,phone}=req.body;
     let users
     try{
       users = await  customerdata.findOne({ email: email });
