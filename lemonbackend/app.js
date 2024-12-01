@@ -295,8 +295,8 @@ app.post('/login',async (req,res,next)=>{
       // Twilio credentials
  
       const client = twilio(accountSid, authToken);
-      const messageBody = `Dear ${farmerName},\n\nWe have received your ${product} with the following details:\n\n- Quantity: ${qty}\n- Bags: ${bags}\n- Cost Price: ₹${costPrice}\n- Total Amount: ₹\u0332${[...TotalAmount.toString()].join("\u0332")}\n- Date: ${date}\n\nThank you for visiting UMA Lemon Market!`;
-
+      //const messageBody = `Dear ${farmerName},\n\nWe have received your ${product} with the following details:\n\n- Quantity: ${qty} kilos\n- Bags: ${bags}\n- Cost Price: ₹${costPrice}\n- Total Amount: ₹\u0332${[...TotalAmount.toString()].join("\u0332")}\n- Date: ${date}\n\nThank you for visiting UMA Lemon Market!`;
+      const messageBody=`ప్రియమైన ${farmerName}, \n\n మీ ${product} కిందివివరాలతో మేము స్వీకరించాము:\n\n- పరిమాణం: ${qty} కిలోలు\n- సంచులు: ${bags}\n-ధర: ₹${costPrice}\n-మొత్తం: ₹\u0332${[...TotalAmount.toString()].join("\u0332")}\n-తేదీ: ${date}\n\n ఉమా నిమ్మకాయ మార్కెట్‌ను ఎంచుకున్నందుకు మీకు ప్రత్యేక ధన్యవాదాలు.!`;
 
       // Send the SMS
       client.messages
