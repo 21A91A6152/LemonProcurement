@@ -316,6 +316,7 @@
 import React, { useState, useEffect, useCallback } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { motion } from "framer-motion";
 
 const PurchaseDashboard = (user) => {
  
@@ -327,6 +328,7 @@ const PurchaseDashboard = (user) => {
     farmerName: "",
     phone: "",
     qty: "",
+    bags:"",
     costPrice: "",
     date: new Date().toISOString().split("T")[0], // System date in yyyy-mm-dd
     product: "Lemon",
@@ -340,6 +342,7 @@ const PurchaseDashboard = (user) => {
   
     if (!newPurchase.farmerName) newErrors.farmerName = "Farmer name is required.";
     if (!newPurchase.qty || newPurchase.qty <= 0) newErrors.qty = "Quantity must be greater than 0.";
+    if (!newPurchase.bags || newPurchase.bags <= 0) newErrors.bags = "Bags must be greater than 0.";
     if (!newPurchase.costPrice || newPurchase.costPrice <= 0) newErrors.costPrice = "Cost price must be greater than 0.";
   
     setErrors(newErrors);
@@ -390,64 +393,70 @@ const PurchaseDashboard = (user) => {
   
 
   const handleAddPurchase = async () => {
-    if (!newPurchase.farmerName || !newPurchase.qty || !newPurchase.costPrice) {
-      Swal.fire({
-        title: "Error",
-        text: "All fields are required!",
-        icon: "error",
-      });
-      return;
-    }
+  // Check if required fields are empty
+   
 
-    if (!user.user) {
-      Swal.fire({
-        title: "Error",
-        text: "User data is not available. Please log in first.",
-        icon: "error",
-      });
-      return;
-    }
+  // Check if the user is logged in
+  if (!user.user) {
+    Swal.fire({
+      title: "Error",
+      text: "User data is not available. Please log in first.",
+      icon: "error",
+    });
+    return;
+  }
 
-    // Prepare the purchase data
-    const purchaseData = {
-      ...newPurchase,
-      admin: user.user,
-    };
-
-    try {
-        if(validateForm()){
-          const response = await axios.post(
-            "https://lemonprocurement.onrender.com/api/addpurchases",
-            purchaseData
-          );
-          Swal.fire({
-            title: "Success",
-            text: response.data.msg,
-            icon: "success",
-          });
-
-          // Close the modal and reset the purchase form
-          setIsModalOpen(false);
-          fetchpurchases();
-          setNewPurchase({
-            farmerName: "",
-            phone: "",
-            qty: "",
-            costPrice: "",
-            date: new Date().toISOString().split("T")[0],
-            product: "Lemon",
-            admin: user.user,
-          });
-        }
-    } catch (error) {
-      console.error("Error adding purchase:", error);
-      Swal.fire({
-        title: "Error",
-        text: "An error occurred while adding the purchase. Please try again later.",
-        icon: "error",
-      });
-    }
+  // Prepare the purchase data
+  const purchaseData = {
+    ...newPurchase,
+    admin: user.user,
   };
+
+  try {
+    // Assuming `validateForm()` is a function to validate the `newPurchase` fields
+    if (validateForm(newPurchase)) {
+      const response = await axios.post(
+        "https://lemonprocurement.onrender.com/api/addpurchases",
+        purchaseData
+      );
+
+      // Show success message
+      Swal.fire({
+        title: "Success",
+        text: response.data.msg,
+        icon: "success",
+      });
+
+      // Fetch updated purchases list
+      fetchpurchases();
+
+      // Reset the form after successful submission
+      setNewPurchase({
+        farmerName: "",
+        phone: "",
+        qty: "",
+        bags: "",
+        costPrice: "",
+        date: new Date().toISOString().split("T")[0],
+        product: "Lemon",
+        admin: user.user,
+      });
+
+      // Close the modal
+      setIsModalOpen(false);
+    }
+  } catch (error) {
+    console.error("Error adding purchase:", error);
+
+    // Show error message
+    Swal.fire({
+      title: "Error",
+      text: "An error occurred while adding the purchase. Please try again later.",
+      icon: "error",
+    });
+  }
+};
+
 
   const fetchpurchases = useCallback(async () => {
     if (!user.user) {
@@ -518,6 +527,7 @@ const PurchaseDashboard = (user) => {
             <tr>
               <th className="px-4 py-2 text-left">Farmer Name</th>
               <th className="px-4 py-2 text-left">Qty</th>
+              <th className="px-4 py-2 text-left">Bags</th>
               <th className="px-4 py-2 text-left">Cost Price(&#8377;)</th>
               <th className="px-4 py-2 text-left">Amount(&#8377;)</th>
               <th className="px-4 py-2 text-left">Date</th>
@@ -527,9 +537,16 @@ const PurchaseDashboard = (user) => {
           </thead>
           <tbody>
             {purchases.map((purchase, index) => (
-              <tr key={index} className="border-t">
+              <motion.tr
+                  key={index}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.1 }}
+                  className="hover:bg-gray-100"
+                >
                 <td className="px-4 py-2">{purchase.farmerName}</td>
                 <td className="px-4 py-2">{purchase.qty}</td>
+                <td className="px-4 py-2">{purchase.bags}</td>
                 <td className="px-4 py-2">&#8377;{purchase.costPrice}</td>
                 <td className="px-4 py-2">&#8377;{purchase.TotalAmount}</td>
                 <td className="px-4 py-2">{purchase.date}</td>
@@ -540,7 +557,7 @@ const PurchaseDashboard = (user) => {
                     >
                       Delete
                     </button>
-              </tr>
+              </motion.tr>
             ))}
             {purchases.length === 0 && (
               <tr>
@@ -556,11 +573,14 @@ const PurchaseDashboard = (user) => {
       {/* Modal */}
       {isModalOpen && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-10">
-          <div className="bg-white w-full max-w-lg p-6 rounded shadow-lg">
-            <h2 className="text-xl font-bold mb-4">Add Purchase</h2>
-
-            {/* Form */}
-            <div className="space-y-4">
+        <div
+          className="bg-white w-full max-w-lg p-6 rounded shadow-lg overflow-y-auto"
+          style={{ maxHeight: "90vh" }} // Added max-height for scrollable content
+        >
+          <h2 className="text-xl font-bold mb-4">Add Purchase</h2>
+      
+          {/* Form */}
+          <div className="space-y-4">
             <div>
               <label className="block font-medium">
                 Farmer Name <span className="text-red-500">*</span>
@@ -589,88 +609,118 @@ const PurchaseDashboard = (user) => {
                 <p className="text-red-500 text-sm">{errors.farmerName}</p>
               )}
             </div>
-
-              <div>
-                <label className="block font-medium">Phone Number  <span className="text-red-500">*</span></label>
-                <input
-                  type="text"
-                  name="phone"
-                  value={newPurchase.phone}
-                  readOnly
-                  className="w-full px-4 py-2 border rounded bg-gray-100 cursor-not-allowed"
-                />
-              </div>
-              <div>
-                <label className="block font-medium">
-                  Qty <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="qty"
-                  value={newPurchase.qty}
-                  onChange={handleInputChange}
-                  className={`w-full px-4 py-2 border rounded ${
-                    errors.qty ? "border-red-500" : ""
-                  }`}
-                  required
-                />
-                {errors.qty && <p className="text-red-500 text-sm">{errors.qty}</p>}
-              </div>
-              <div>
-                <label className="block font-medium">
-                  Cost Price <span className="text-red-500">*</span>
-                </label>
-                <input
-                  type="number"
-                  name="costPrice"
-                  value={newPurchase.costPrice}
-                  onChange={handleInputChange}
-                  className={`w-full px-4 py-2 border rounded ${
-                    errors.costPrice ? "border-red-500" : ""
-                  }`}
-                  required
-                />
-                {errors.costPrice && <p className="text-red-500 text-sm">{errors.costPrice}</p>}
-              </div>
-              <div>
-                <label className="block font-medium">Date  <span className="text-red-500">*</span></label>
-                <input
-                  type="text"
-                  name="date"
-                  value={newPurchase.date}
-                  readOnly
-                  className="w-full px-4 py-2 border rounded bg-gray-100 cursor-not-allowed"
-                />
-              </div>
-              <div>
-                <label className="block font-medium">Product  <span className="text-red-500">*</span></label>
-                <input
-                  type="text"
-                  name="product"
-                  value={newPurchase.product}
-                  readOnly
-                  className="w-full px-4 py-2 border rounded bg-gray-100 cursor-not-allowed"
-                />
-              </div>
+      
+            <div>
+              <label className="block font-medium">
+                Phone Number <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="phone"
+                value={newPurchase.phone}
+                readOnly
+                className="w-full px-4 py-2 border rounded bg-gray-100 cursor-not-allowed"
+              />
             </div>
-
-            {/* Buttons */}
-            <div className="mt-6 flex justify-end space-x-4">
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition"
-              >
-                Cancel
-              </button>
-              <button
-                onClick={handleAddPurchase}
-                className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
-              >
-                Add
-              </button>
+      
+            <div>
+              <label className="block font-medium">
+                Qty <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                name="qty"
+                value={newPurchase.qty}
+                onChange={handleInputChange}
+                className={`w-full px-4 py-2 border rounded ${
+                  errors.qty ? "border-red-500" : ""
+                }`}
+                required
+              />
+              {errors.qty && <p className="text-red-500 text-sm">{errors.qty}</p>}
+            </div>
+      
+            <div>
+              <label className="block font-medium">
+                Bags <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                name="bags"
+                value={newPurchase.bags}
+                onChange={handleInputChange}
+                className={`w-full px-4 py-2 border rounded ${
+                  errors.bags ? "border-red-500" : ""
+                }`}
+                required
+              />
+              {errors.bags && <p className="text-red-500 text-sm">{errors.bags}</p>}
+            </div>
+      
+            <div>
+              <label className="block font-medium">
+                Cost Price <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="number"
+                name="costPrice"
+                value={newPurchase.costPrice}
+                onChange={handleInputChange}
+                className={`w-full px-4 py-2 border rounded ${
+                  errors.costPrice ? "border-red-500" : ""
+                }`}
+                required
+              />
+              {errors.costPrice && (
+                <p className="text-red-500 text-sm">{errors.costPrice}</p>
+              )}
+            </div>
+      
+            <div>
+              <label className="block font-medium">
+                Date <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="date"
+                value={newPurchase.date}
+                readOnly
+                className="w-full px-4 py-2 border rounded bg-gray-100 cursor-not-allowed"
+              />
+            </div>
+      
+            <div>
+              <label className="block font-medium">
+                Product <span className="text-red-500">*</span>
+              </label>
+              <input
+                type="text"
+                name="product"
+                value={newPurchase.product}
+                readOnly
+                className="w-full px-4 py-2 border rounded bg-gray-100 cursor-not-allowed"
+              />
             </div>
           </div>
+      
+          {/* Buttons */}
+          <div className="mt-6 flex justify-end space-x-4">
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400 transition"
+            >
+              Cancel
+            </button>
+            <button
+              onClick={handleAddPurchase}
+              className="px-4 py-2 bg-green-500 text-white rounded hover:bg-green-600 transition"
+            >
+              Add
+            </button>
+          </div>
         </div>
+      </div>
+      
       )}
     </div>
   );

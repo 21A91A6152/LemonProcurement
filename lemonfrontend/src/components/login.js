@@ -19,29 +19,9 @@ function SignIn() {
       'confirmpassword':'',
   }) 
     const [currentView, setCurrentView] = useState('login');
-    const [lerrors, setlErrors] = useState({});
+    
 
-    const validateloginForm = () => {
-      const newErrors = {};
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-      // Email validation
-      if (!formDataL.email || !emailRegex.test(formDataL.email)) {
-        newErrors.email = "Enter a valid email address.";
-      }
-
-      // Password validation
-      if (!formDataL.password || formDataL.password.length < 6) {
-        newErrors.password = "Password must be at least 6 characters.";
-      }
-
-      // Update errors state
-      setlErrors(newErrors);
-
-      // Return true if no errors, otherwise false
-      return Object.keys(newErrors).length === 0;
-    };
-
+     
 
     const [errors, setErrors] = useState({});
 
@@ -89,52 +69,77 @@ function SignIn() {
         
 
 
-        const handleLoginSubmit = async (e) => {
-          e.preventDefault();
-        
-          // Validate login form
-          
-            try {
-              // Make POST request to the login endpoint
-              const response = await axios.post('https://lemonprocurement.onrender.com/login', formDataL);
-        
-              const { msg, email } = response.data;
-        
-              // Check if login is successful
-              if (msg === "login successful") {
-                Swal.fire({
-                  position: "middle",
-                  icon: "success",
-                  title: "Login successful!",
-                  showConfirmButton: false,
-                  timer: 1500,
-                });
-        
-                // Store user data in localStorage
-                localStorage.setItem('userData', JSON.stringify(email.email));
-        
-                // Redirect to home page
-                window.location.href = '/';
-              } else {
-                // Handle unsuccessful login case
-                Swal.fire({
-                  title: "Login unsuccessful!",
-                  text: "Check your details and try again.",
-                  icon: "error",
-                });
-              }
-            } catch (error) {
-              // Log the error and show user feedback
-              console.error("Error occurred while logging in:", error);
-              Swal.fire({
-                title: "Error",
-                text: "An error occurred while logging in. Please try again later.",
-                icon: "error",
-              });
-            
-          }
-        };
-        
+        const [lerrors, setlErrors] = useState({});
+
+const validateloginForm = () => {
+  const newErrors = {};
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  // Email validation
+  if (!formDataL.email || !emailRegex.test(formDataL.email)) {
+    newErrors.email = "Enter a valid email address.";
+  }
+
+  // Password validation
+  if (!formDataL.password || formDataL.password.length < 6) {
+    newErrors.password = "Password must be at least 6 characters.";
+  }
+
+  // Update errors state
+  setlErrors(newErrors);
+
+  // Return true if no errors, otherwise false
+  return Object.keys(newErrors).length === 0;
+};
+
+const handleLoginSubmit = async (e) => {
+  e.preventDefault();
+
+  // Validate login form
+  if (validateloginForm()) { // Corrected: Call the function
+    try {
+      // Make POST request to the login endpoint
+      const response = await axios.post(
+        "https://lemonprocurement.onrender.com/login",
+        formDataL
+      );
+
+      const { msg, email } = response.data;
+
+      // Check if login is successful
+      if (msg === "login successful") {
+        Swal.fire({
+          position: "middle",
+          icon: "success",
+          title: "Login successful!",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+
+        // Store user data in localStorage
+        localStorage.setItem("userData", JSON.stringify(email.email));
+
+        // Redirect to home page
+        window.location.href = "/";
+      } else {
+        // Handle unsuccessful login case
+        Swal.fire({
+          title: "Login unsuccessful!",
+          text: "Check your details and try again.",
+          icon: "error",
+        });
+      }
+    } catch (error) {
+      // Log the error and show user feedback
+      console.error("Error occurred while logging in:", error);
+      Swal.fire({
+        title: "Error",
+        text: "An error occurred while logging in. Please try again later.",
+        icon: "error",
+      });
+    }
+  }
+};
 
     const handleSignupSubmit = async (e) => {
       e.preventDefault();

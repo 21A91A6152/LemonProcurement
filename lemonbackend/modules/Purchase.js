@@ -11,6 +11,10 @@ let Purchaseschema = new Schema({
         type: String,
         required: true,
     },
+    bags: {
+        type: String,
+        required: true,
+    },
     costPrice: {
         type: String,
         required: true,

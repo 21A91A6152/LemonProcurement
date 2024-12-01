@@ -48,42 +48,84 @@ function FarmersDashboard(user) {
 
   const handleAddFarmer = () => {
     const updatedFormData = {
-        ...formData,
-        admin: user.user, // Use the current user value for the admin field
-      };
-   
-    setFormData({
-      firstName: "",
-      surName: "",
-      phoneNumber: "",
-      village: "",
-      city: "",
-      state: "Andhra Pradesh",
-      country: "India",
-      pincode: "",
-      admin:user.user,
-    });
-    if(validateForm()){
-    axios.post('https://lemonprocurement.onrender.com/api/addfarmers',updatedFormData)
-            .then((res) => {
-                Swal.fire({
-                    title: "Success",
-                    text: res.data.msg,
-                    icon: "success"
-                });
-                setShowForm(false);
-                fetchFarmers()
-            })
-            .catch((error) => {
-                console.error("Error occurred during signup:", error);
-                Swal.fire({
-                    title: "Error",
-                    text: "An error occurred while signing up. Please try again later.",
-                    icon: "error"
-                });
-            });
-          }
+      ...formData,
+      admin: user.user, // Use the current user value for the admin field
+    };
+  
+    if (validateForm()) {
+      // Only reset formData after successful validation and submission
+      axios
+        .post('https://lemonprocurement.onrender.com/api/addfarmers', updatedFormData)
+        .then((res) => {
+          Swal.fire({
+            title: "Success",
+            text: res.data.msg,
+            icon: "success",
+          });
+          setShowForm(false);
+          setFormData({
+            firstName: "",
+            surName: "",
+            phoneNumber: "",
+            village: "",
+            city: "",
+            state: "Andhra Pradesh",
+            country: "India",
+            pincode: "",
+            admin: user.user,
+          });
+          fetchFarmers();
+        })
+        .catch((error) => {
+          console.error("Error occurred during signup:", error);
+          Swal.fire({
+            title: "Error",
+            text: "An error occurred while signing up. Please try again later.",
+            icon: "error",
+          });
+        });
+    }
   };
+  
+
+  // const handleAddFarmer = () => {
+  //   const updatedFormData = {
+  //       ...formData,
+  //       admin: user.user, // Use the current user value for the admin field
+  //     };
+   
+  //   setFormData({
+  //     firstName: "",
+  //     surName: "",
+  //     phoneNumber: "",
+  //     village: "",
+  //     city: "",
+  //     state: "Andhra Pradesh",
+  //     country: "India",
+  //     pincode: "",
+  //     admin:user.user,
+  //   });
+  //   if(validateForm()){
+  //   axios.post('https://lemonprocurement.onrender.com/api/addfarmers',updatedFormData)
+  //           .then((res) => {
+  //               Swal.fire({
+  //                   title: "Success",
+  //                   text: res.data.msg,
+  //                   icon: "success"
+  //               });
+  //               setShowForm(false);
+  //               fetchFarmers()
+  //           })
+  //           .catch((error) => {
+  //               console.error("Error occurred during signup:", error);
+  //               Swal.fire({
+  //                   title: "Error",
+  //                   text: "An error occurred while signing up. Please try again later.",
+  //                   icon: "error"
+  //               });
+  //           });
+  //         }
+  // };
  
   const fetchFarmers = useCallback(async () => {
     if (!user.user) {
