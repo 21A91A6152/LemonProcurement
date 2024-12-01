@@ -7,6 +7,7 @@ let Purchaseschema = new Schema({
         type: String,
         required: true,
     },
+    
     qty: {
         type: String,
         required: true,
@@ -15,7 +16,23 @@ let Purchaseschema = new Schema({
         type: String,
         required: true,
     },
+    grade: {
+        type: String,
+        required: true,
+    },
     costPrice: {
+        type: String,
+        required: true,
+    },
+    transportationcost: {
+        type: String,
+        required: true,
+    },
+    loadingcost: {
+        type: String,
+        required: true,
+    },
+    commisionfee: {
         type: String,
         required: true,
     },

@@ -7,6 +7,7 @@ import customerdata from './modules/Customer.js';
 import productdata from './modules/Product.js';
 import farmerdata from './modules/Farmers.js';
 import purchasedata from './modules/Purchase.js';
+import chargesdata from './modules/Charges.js';
 import twilio from 'twilio';
 import dotenv from 'dotenv';
 
@@ -284,12 +285,23 @@ app.post('/login',async (req,res,next)=>{
   //add purchase
 
   app.post('/api/addpurchases', async (req, res, next) => {
+    console.log(req.body)
     try {
-      const { farmerName, qty,bags, costPrice, date, product, admin, phone } = req.body;
-      const TotalAmount=qty*costPrice;
-  
+      const { farmerName, qty,bags,grade,transportationcost,loadingcost,commisionfee, costPrice, date, product, admin, phone } = req.body;
+      const Amount = bags * costPrice;
+
+      // Calculate Commission Fees as a percentage of TotalAmount
+      const commissionFees = (commisionfee / 100) * Amount;
+    
+      // Initialize TotalAmount
+      let TotalAmount = Amount - (bags * transportationcost) - commissionFees - (bags * loadingcost);
+    
+      // Adjust TotalAmount based on grade
+      if (grade === "B") {
+        TotalAmount -= 100; // Deduct 100 if grade is "B"
+      }
       // Save the new purchase data
-      const newPost = new purchasedata({ farmerName, qty,bags, costPrice,TotalAmount, date, product, admin });
+      const newPost = new purchasedata({ farmerName , qty,bags,grade,transportationcost, loadingcost,commisionfee,costPrice,TotalAmount, date, product, admin });
       await newPost.save();
   
       // Twilio credentials
@@ -344,3 +356,47 @@ app.post('/login',async (req,res,next)=>{
     await purchasedata.findByIdAndDelete(id);
     res.status(204).send();
   });
+
+
+  // add or update charges
+
+ 
+app.post("/addcosts", async (req, res) => {
+  const { admin, type, code, value } = req.body;
+
+  try {
+    // Find if the record already exists for the user and type
+    let existingCost = await chargesdata.findOne({ admin, type });
+
+    if (existingCost) {
+      // Update the record
+      existingCost.value = value;
+      existingCost.code = code;
+      await existingCost.save();
+      return res.status(200).json({ message: "Cost updated successfully!", data: existingCost });
+    } else {
+      // Create a new record
+      const newCost = new chargesdata({ admin, type, code, value });
+      await newCost.save();
+      return res.status(201).json({ message: "Cost added successfully!", data: newCost });
+    }
+  } catch (error) {
+    console.error("Error handling cost record:", error);
+    return res.status(500).json({ message: "An error occurred while saving the cost." });
+  }
+});
+
+// get charges
+
+
+app.get('/costs', async (req, res) => {
+  try {
+    const adminid = req.query.userId; // Get user ID from query parameters
+    console.log(adminid)
+    const posts = await chargesdata.find({ admin: adminid }); // Fetch posts for the specific user
+    res.json(posts);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: 'Server Error' });
+  }
+});

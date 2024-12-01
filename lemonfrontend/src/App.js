@@ -46,6 +46,7 @@ import SignIn from "./components/login";
 import ProductsDashboard from "./components/Products";
 import FarmersDashboard from "./components/Farmers";
 import PurchaseDashboard from "./components/Purchase";
+import CostManager from "./components/CostManager";
 import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 
 const App = () => {
@@ -83,6 +84,7 @@ const App = () => {
               <Route path="/products" element={<ProductsDashboard user={user}/>} />
               <Route path="/vendors/farmers" element={<FarmersDashboard user={user}/>} />
               <Route path="/purchase" element={<PurchaseDashboard user={user}/>} />
+              <Route path="/costmanager" element={<CostManager user={user}/>} />
               <Route path="*" element={<Navigate to="/" />} /> {/* Redirect invalid routes */}
             </Routes>
             <Footer />

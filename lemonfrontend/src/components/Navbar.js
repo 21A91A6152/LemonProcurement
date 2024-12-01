@@ -50,6 +50,9 @@ const Navbar = ({ onLogout }) => {
           <li className="hover:text-gray-200 cursor-pointer">
             <Link to="/purchase" className="hover:text-black cursor-pointer">Purchase</Link>
           </li>
+          <li className="hover:text-gray-200 cursor-pointer">
+            <Link to="/costmanager" className="hover:text-black cursor-pointer">Charges</Link>
+          </li>
           {isLoggedIn ? (
             <>
               <li>
@@ -121,6 +124,12 @@ const Navbar = ({ onLogout }) => {
                   Purchase
                 </Link>
               </li>
+              <li>
+                <Link to="/costmanager" className="hover:text-gray-200 cursor-pointer" onClick={toggleSidebar}>
+                  Charges
+                </Link>
+              </li>
+               
               {isLoggedIn ? (
                 <>
                   <li className="font-medium text-lg">{user}</li>
