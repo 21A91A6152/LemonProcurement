@@ -8,7 +8,7 @@ import { useEffect,useState,useCallback } from "react";
 const Report = (user) => {
   
     const location = useLocation();
-    const [farmer,setFarmers]=useState(null);
+    const [farmer,setFarmers]=useState([]);
     const [purchases, setPurchases] = useState([]);
 
     // Parse Query Parameters
@@ -110,25 +110,25 @@ const Report = (user) => {
       <div ref={printRef} id="pdfContent" className="bg-white p-4 shadow-lg rounded-lg">
         <h1 className="text-2xl font-bold text-gray-800 mb-4">Farmer Purchase Report</h1>
         <div className="mb-4">
-            {farmer.length > 0 ? (
-                <div>
-                    <p className="text-gray-600">
-                    <span className="font-semibold">Name:</span> {farmer[0].farmerName}
-                    </p>
-                    <p className="text-gray-600">
-                    <span className="font-semibold">Phone Number:</span> {farmer[0].phoneNumber}
-                    </p>
-                    <p className="text-gray-600">
-                    <span className="font-semibold">Location:</span> {farmer[0].village},{farmer[0].city},{farmer[0].state},{farmer[0].country},{farmer[0].pincode}
-                    </p>
-                </div>
-                ) : (
-                <p>Loading farmer details...</p>
-                )}
-
-
-      
+      {farmer.length > 0 ? (
+        <div>
+          <p className="text-gray-600">
+            <span className="font-semibold">Name:</span> {farmer[0].farmerName}
+          </p>
+          <p className="text-gray-600">
+            <span className="font-semibold">Phone Number:</span>{" "}
+            {farmer[0].phoneNumber}
+          </p>
+          <p className="text-gray-600">
+            <span className="font-semibold">Location:</span>{" "}
+            {farmer[0].village}, {farmer[0].city}, {farmer[0].state},{" "}
+            {farmer[0].country}, {farmer[0].pincode}
+          </p>
         </div>
+      ) : (
+        <p>Loading farmer details...</p>
+      )}
+    </div>
         <table className="min-w-full border border-gray-200">
           <thead>
             <tr className="bg-gray-200">
