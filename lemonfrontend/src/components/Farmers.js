@@ -2,8 +2,10 @@ import React, { useState,useEffect,useCallback } from "react";
 import axios from "axios";
 import Swal from 'sweetalert2';
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 function FarmersDashboard(user) {
+  const navigate = useNavigate();
   const [farmers, setFarmers] = useState([]);
   const [showForm, setShowForm] = useState(false);
  
@@ -173,6 +175,10 @@ function FarmersDashboard(user) {
     }
   };
   
+  const handleFarmerClick = (farmerName) => {
+    navigate(`/report?farmerName=${encodeURIComponent(farmerName)}`);
+  };
+   
   
 
   return (
@@ -192,8 +198,7 @@ function FarmersDashboard(user) {
           <table className="table-auto w-full bg-white shadow-md rounded-lg">
             <thead className="bg-gray-200">
               <tr>
-                <th className="px-4 py-2">First Name</th>
-                <th className="px-4 py-2">Sur Name</th>
+                <th className="px-4 py-2">Farmer Name</th>
                 <th className="px-4 py-2">Phone Number</th>
                 <th className="px-4 py-2">Village</th>
                 <th className="px-4 py-2">City</th>
@@ -209,10 +214,9 @@ function FarmersDashboard(user) {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="hover:bg-gray-100"
+                  className="hover:bg-gray-100 text-center"
                 >
-                  <td className="px-4 py-2">{farmer.firstName}</td>
-                  <td className="px-4 py-2">{farmer.surName}</td>
+                  <td className="px-4 py-2" onClick={() => handleFarmerClick(farmer.farmerName)}>{farmer.farmerName}</td>
                   <td className="px-4 py-2">{farmer.phoneNumber}</td>
                   <td className="px-4 py-2">{farmer.village}</td>
                   <td className="px-4 py-2">{farmer.city}</td>

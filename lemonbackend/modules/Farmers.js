@@ -1,13 +1,9 @@
 import mongoose from "mongoose";
 const Schema = mongoose.Schema
 let Farmerschema =new Schema({
-    firstName:{
-        type:String ,
-        required:true
-    },
-    surName:{
-        type:String ,
-        required:true
+    farmerName: {
+        type: String,
+        required: true,
     },
     phoneNumber:{
         type:String  ,

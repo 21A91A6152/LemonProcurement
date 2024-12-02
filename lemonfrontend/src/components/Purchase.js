@@ -2,9 +2,10 @@ import React, { useState, useEffect, useCallback } from "react";
 import Swal from "sweetalert2";
 import axios from "axios";
 import { motion } from "framer-motion";
-
-const PurchaseDashboard = (user) => {
+import { useNavigate } from "react-router-dom";
  
+const PurchaseDashboard = (user) => {
+  const navigate = useNavigate();
   const [farmers, setFarmers] = useState([]);
   const [purchases, setPurchases] = useState([]);
  
@@ -101,13 +102,13 @@ const PurchaseDashboard = (user) => {
 
   const handleFarmerChange = (e) => {
     const selectedFarmer = farmers.find(
-      (farmer) => `${farmer.surName} ${farmer.firstName}` === e.target.value
+      (farmer) => `${farmer.farmerName} ` === e.target.value
     );
   
     // Set farmerName and phone fields in the state
     setNewPurchase((prevPurchase) => ({
       ...prevPurchase,
-      farmerName: selectedFarmer ? `${selectedFarmer.surName} ${selectedFarmer.firstName}` : "",
+      farmerName: selectedFarmer ? `${selectedFarmer.farmerName}  ` : "",
       phone: selectedFarmer ? `+91${selectedFarmer.phoneNumber}` : "",  // Format phone number with +91
     }));
   };
@@ -230,6 +231,9 @@ const PurchaseDashboard = (user) => {
     }
   };
 
+  const handleFarmerClick = (farmerName) => {
+    navigate(`/report?farmerName=${encodeURIComponent(farmerName)}`);
+  };
    
   
 
@@ -249,15 +253,15 @@ const PurchaseDashboard = (user) => {
         <table className="min-w-full bg-white shadow rounded-lg">
           <thead className="bg-green-500 text-white">
             <tr>
-              <th className="px-4 py-2 text-left">Farmer Name</th>
-              <th className="px-4 py-2 text-left">Qty</th>
-              <th className="px-4 py-2 text-left">Bags</th>
-              <th className="px-4 py-2 text-left">Grade</th>
-              <th className="px-4 py-2 text-left">Cost Price(&#8377;)</th>
-              <th className="px-4 py-2 text-left">Amount(&#8377;)</th>
-              <th className="px-4 py-2 text-left">Date</th>
-              <th className="px-4 py-2 text-left">Product</th>
-              <th className="px-4 py-2 text-left">Edit</th>
+              <th className="px-2 py-2 text-left">Farmer Name</th>
+              <th className="px-2 py-2 text-left">Qty</th>
+              <th className="px-2 py-2 text-left">Bags</th>
+              <th className="px-2 py-2 text-left">Grade</th>
+              <th className="px-2 py-2 text-left">Cost Price(&#8377;)</th>
+              <th className="px-2 py-2 text-left">Amount(&#8377;)</th>
+              <th className="px-2 py-2 text-left">Date</th>
+              <th className="px-2 py-2 text-left">Product</th>
+              <th className="px-2 py-2 text-left">Edit</th>
             </tr>
           </thead>
           <tbody>
@@ -269,14 +273,14 @@ const PurchaseDashboard = (user) => {
                   transition={{ duration: 0.3, delay: index * 0.1 }}
                   className="hover:bg-gray-100"
                 >
-                <td className="px-4 py-2">{purchase.farmerName}</td>
-                <td className="px-4 py-2">{purchase.qty}</td>
-                <td className="px-4 py-2">{purchase.bags}</td>
-                <td className="px-4 py-2">{purchase.grade}</td>
-                <td className="px-4 py-2">&#8377;{purchase.costPrice}</td>
-                <td className="px-4 py-2">&#8377;{purchase.TotalAmount}</td>
-                <td className="px-4 py-2">{purchase.date}</td>
-                <td className="px-4 py-2">{purchase.product}</td>
+                <td className="px-2 py-2"  onClick={() => handleFarmerClick(purchase.farmerName)}>{purchase.farmerName}</td>
+                <td className="px-2 py-2">{purchase.qty}</td>
+                <td className="px-2 py-2">{purchase.bags}</td>
+                <td className="px-2 py-2">{purchase.grade}</td>
+                <td className="px-2 py-2">&#8377;{purchase.costPrice}</td>
+                <td className="px-2 py-2">&#8377;{purchase.TotalAmount}</td>
+                <td className="px-2 py-2">{purchase.date}</td>
+                <td className="px-2 py-2">{purchase.product}</td>
                 <button
                       onClick={() => handleDelete(purchase._id)}
                       className="bg-red-500 text-white py-1 px-2 rounded mt-1"
@@ -325,9 +329,9 @@ const PurchaseDashboard = (user) => {
                 {farmers.map((farmer) => (
                   <option
                     key={farmer.id}
-                    value={`${farmer.surName} ${farmer.firstName}`}
+                    value={`${farmer.farmerName} `}
                   >
-                    {farmer.surName} {farmer.firstName}
+                    {farmer.farmerName}  
                   </option>
                 ))}
               </select>

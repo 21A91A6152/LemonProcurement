@@ -250,7 +250,8 @@ app.post('/login',async (req,res,next)=>{
     console.log(req.body)
     try {
       const {firstName,surName,phoneNumber,village,city,state,country,pincode,admin } = req.body;
-      const newPost = new farmerdata({firstName,surName,phoneNumber,village,city,state,country,pincode,admin});
+      let farmerName=surName+" "+firstName
+      const newPost = new farmerdata({ farmerName,phoneNumber,village,city,state,country,pincode,admin});
       await newPost.save();
       res.status(201).json({ msg: "Farmer added successfully!", product: newPost });
     } catch (error) {
@@ -392,7 +393,7 @@ app.post("/addcosts", async (req, res) => {
 app.get('/costs', async (req, res) => {
   try {
     const adminid = req.query.userId; // Get user ID from query parameters
-    console.log(adminid)
+   
     const posts = await chargesdata.find({ admin: adminid }); // Fetch posts for the specific user
     res.json(posts);
   } catch (error) {
@@ -400,3 +401,61 @@ app.get('/costs', async (req, res) => {
     res.status(500).json({ message: 'Server Error' });
   }
 });
+
+
+//get report purchases
+app.get('/api/reportpurchases', async (req, res) => {
+  const adminId = req.query.userId; // admin email
+  const farmerName = req.query.farmerName; // farmer name
+
+  if (!adminId || !farmerName) {
+    return res.status(400).json({ error: 'Missing adminId or farmerName' });
+  }
+
+  try {
+    
+
+    const posts = await purchasedata.find({
+      admin: adminId,
+      farmerName: farmerName.trim() // Ensures match without trailing spaces
+    });
+
+    if (posts.length === 0) {
+      return res.status(404).json({ message: 'No matching purchases found' });
+    }
+
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
+
+//get report farmer
+app.get('/api/reportfarmers', async (req, res) => {
+  const adminId = req.query.userId; // admin email
+  const farmerName = req.query.farmerName; // farmer name
+
+  if (!adminId || !farmerName) {
+    return res.status(400).json({ error: 'Missing adminId or farmerName' });
+  }
+
+  try {
+  
+    const posts = await farmerdata.find({
+      admin: adminId,
+      farmerName: farmerName.trim() // Ensures match without trailing spaces
+    });
+
+    if (posts.length === 0) {
+      return res.status(404).json({ message: 'No matching purchases found' });
+    }
+
+    res.status(200).json(posts);
+  } catch (error) {
+    console.error('Error fetching data:', error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
