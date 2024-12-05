@@ -121,7 +121,7 @@ function ProductsDashboard(user) {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.1 }}
-                  className="hover:bg-gray-100"
+                  className="hover:bg-gray-100 text-center"
                 >
                   <td className="px-4 py-2">{product.name}</td>
                   <td className="px-4 py-2">{product.description}</td>
@@ -155,7 +155,7 @@ function ProductsDashboard(user) {
             transition={{ duration: 0.3 }}
             className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center"
           >
-            <div className="bg-white p-6 rounded-lg shadow-lg w-96">
+            <div className="bg-white p-6 rounded-lg shadow-lg w-96 ">
               <h2 className="text-xl font-bold mb-4">Add Product</h2>
               <div className="space-y-4">
                 <div>

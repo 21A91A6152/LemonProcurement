@@ -251,11 +251,18 @@ function FarmersDashboard(user) {
             transition={{ duration: 0.3 }}
             className="fixed inset-0 bg-gray-800 bg-opacity-50 flex justify-center items-center"
           >
+            <div
+          className="bg-white w-full max-w-lg p-6 rounded shadow-lg overflow-y-auto"
+          style={{ maxHeight: "90vh" }} // Added max-height for scrollable content
+        > 
             <div className="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
                 <h2 className="text-xl font-bold mb-4">Add Farmer</h2>
                 <div className="space-y-5">
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="relative">
+                    <label className="block text-sm font-medium text-gray-700">
+                      First Name <span className="text-red-500">*</span>
+                    </label>
                       <input
                         type="text"
                         name="firstName"
@@ -267,6 +274,9 @@ function FarmersDashboard(user) {
                       {errors.firstName && <p className="text-red-500 text-sm">{errors.firstName}</p>}
                     </div>
                     <div className="relative">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Sur Name <span className="text-red-500">*</span>
+                    </label>
                       <input
                         type="text"
                         name="surName"
@@ -279,6 +289,9 @@ function FarmersDashboard(user) {
                     </div>
                   </div>
                   <div className="relative">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Phone Number <span className="text-red-500">*</span>
+                    </label>
                     <input
                       type="text"
                       name="phoneNumber"
@@ -289,8 +302,12 @@ function FarmersDashboard(user) {
                     />
                     {errors.phoneNumber && <p className="text-red-500 text-sm">{errors.phoneNumber}</p>}
                   </div>
+
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="relative">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Village<span className="text-red-500">*</span>
+                    </label>
                       <input
                         type="text"
                         name="village"
@@ -302,6 +319,9 @@ function FarmersDashboard(user) {
                       {errors.village && <p className="text-red-500 text-sm">{errors.village}</p>}
                     </div>
                     <div className="relative">
+                    <label className="block text-sm font-medium text-gray-700">
+                      City <span className="text-red-500">*</span>
+                    </label>
                       <input
                         type="text"
                         name="city"
@@ -315,6 +335,9 @@ function FarmersDashboard(user) {
                   </div>
                   <div className="grid md:grid-cols-2 gap-4">
                     <div className="relative">
+                    <label className="block text-sm font-medium text-gray-700">
+                      State <span className="text-red-500">*</span>
+                    </label>
                       <select
                         name="state"
                         value={formData.state}
@@ -329,6 +352,9 @@ function FarmersDashboard(user) {
                       {errors.state && <p className="text-red-500 text-sm">{errors.state}</p>}
                     </div>
                     <div className="relative">
+                    <label className="block text-sm font-medium text-gray-700">
+                      Country <span className="text-red-500">*</span>
+                    </label>
                       <select
                         name="country"
                         value={formData.country}
@@ -344,6 +370,9 @@ function FarmersDashboard(user) {
                     </div>
                   </div>
                   <div className="relative">
+                  <label className="block text-sm font-medium text-gray-700">
+                      Pincode <span className="text-red-500">*</span>
+                    </label>
                     <input
                       type="text"
                       name="pincode"
@@ -369,6 +398,7 @@ function FarmersDashboard(user) {
                     </button>
                   </div>
                 </div>
+              </div>
               </div>
           </motion.div>
         )}

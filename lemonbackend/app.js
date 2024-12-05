@@ -289,18 +289,29 @@ app.post('/login',async (req,res,next)=>{
     console.log(req.body)
     try {
       const { farmerName, qty,bags,grade,transportationcost,loadingcost,commisionfee, costPrice, date, product, admin, phone } = req.body;
-      const Amount = bags * costPrice;
+              // Ensure numeric calculations are robust
+          const quantity = Number(qty) || 0;
+          const unitCost = Number(costPrice) || 0;
+          const numBags = Number(bags) || 0;
+          const transportCost = Number(transportationcost) || 0;
+          const loadCost = Number(loadingcost) || 0;
+          const commissionRate = Number(commisionfee) || 0;
+          const gradeValue = Number(grade) || 0;
 
-      // Calculate Commission Fees as a percentage of TotalAmount
-      const commissionFees = (commisionfee / 100) * Amount;
-    
-      // Initialize TotalAmount
-      let TotalAmount = Amount - (bags * transportationcost) - commissionFees - (bags * loadingcost);
-    
-      // Adjust TotalAmount based on grade
-      if (grade === "B") {
-        TotalAmount -= 100; // Deduct 100 if grade is "B"
-      }
+          // Calculate Amount
+          const Amount = quantity * unitCost;
+       
+          // Calculate Commission Fees as a percentage of Amount
+          const commissionFees = (commissionRate / 100) * Amount;
+        
+          // Calculate Total Amount
+          const TotalAmount =
+            Amount -
+            numBags * transportCost -
+            commissionFees -
+            numBags * loadCost +
+            gradeValue;
+ 
       // Save the new purchase data
       const newPost = new purchasedata({ farmerName , qty,bags,grade,transportationcost, loadingcost,commisionfee,costPrice,TotalAmount, date, product, admin });
       await newPost.save();
@@ -331,7 +342,7 @@ app.post('/login',async (req,res,next)=>{
   
     } catch (error) {
       console.error("Error saving farmer:", error);
-      res.status(500).json({ msg: "An error occurred while adding the farmer." });
+      res.status(500).json({ msg: "An error occurred while adding the sales." });
     }
   });
   

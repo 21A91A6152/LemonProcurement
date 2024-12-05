@@ -129,12 +129,19 @@ const Report = (user) => {
         <p>Loading farmer details...</p>
       )}
     </div>
+    <div className="overflow-x-auto"> 
         <table className="min-w-full border border-gray-200">
           <thead>
             <tr className="bg-gray-200">
               <th className="py-2 px-4 border-b">Date</th>
               <th className="py-2 px-4 border-b">Bags</th>
+              <th className="py-2 px-4 border-b">Quantity</th>
+              <th className="py-2 px-4 border-b">B Grade</th>
+              <th className="py-2 px-4 border-b">Cost Price</th>
               <th className="py-2 px-4 border-b">Total Price</th>
+              <th className="py-2 px-4 border-b">Transportation cost</th>
+              <th className="py-2 px-4 border-b">Loading Cost</th>
+              <th className="py-2 px-4 border-b">Commission(%)</th>
             </tr>
           </thead>
           <tbody>
@@ -142,11 +149,18 @@ const Report = (user) => {
               <tr key={index} className="odd:bg-white even:bg-gray-100 text-center">
                 <td className="py-2 px-4 border-b">{record.date}</td>
                 <td className="py-2 px-4 border-b">{record.bags}</td>
+                <td className="py-2 px-4 border-b">{record.qty}</td>
+                <td className="py-2 px-4 border-b">{record.grade}</td>
+                <td className="py-2 px-4 border-b">{record.costPrice}</td>
                 <td className="py-2 px-4 border-b">{record.TotalAmount}</td>
+                <td className="py-2 px-4 border-b">{record.transportationcost}</td>
+                <td className="py-2 px-4 border-b">{record.loadingcost}</td>
+                <td className="py-2 px-4 border-b">{record.commisionfee}</td>
               </tr>
             ))}
           </tbody>
         </table>
+        </div>
       </div>
       {/* Print Button */}
       <button
@@ -155,7 +169,7 @@ const Report = (user) => {
       >
         Print
       </button>
-     {/* <button className="mt-6 px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-500" onClick={() => generatePDF('pdfContent')}>Download PDF</button>*/}
+       {/* <button className="mt-6 px-4 py-2 bg-blue-600 text-white rounded shadow hover:bg-blue-500" onClick={() => generatePDF('pdfContent')}>Download PDF</button> */}
     </div>
   );
 };

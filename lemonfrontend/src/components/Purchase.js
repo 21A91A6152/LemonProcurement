@@ -15,7 +15,7 @@ const PurchaseDashboard = (user) => {
     phone: "",
     qty: "",
     bags:"",
-    grade:"A",
+    grade:"",
     transportationcost:"",
     loadingcost: "",
     commisionfee:"",
@@ -138,7 +138,7 @@ const PurchaseDashboard = (user) => {
     // Assuming `validateForm()` is a function to validate the `newPurchase` fields
     if (validateForm(newPurchase)) {
       const response = await axios.post(
-        "https://lemonprocurement.onrender.com/api/addpurchases",
+        "http://localhost:5000/api/addpurchases",
         purchaseData
       );
 
@@ -256,7 +256,7 @@ const PurchaseDashboard = (user) => {
               <th className="px-2 py-2 text-left">Farmer Name</th>
               <th className="px-2 py-2 text-left">Qty</th>
               <th className="px-2 py-2 text-left">Bags</th>
-              <th className="px-2 py-2 text-left">Grade</th>
+              <th className="px-2 py-2 text-left">B Grade</th>
               <th className="px-2 py-2 text-left">Cost Price(&#8377;)</th>
               <th className="px-2 py-2 text-left">Amount(&#8377;)</th>
               <th className="px-2 py-2 text-left">Date</th>
@@ -405,28 +405,25 @@ const PurchaseDashboard = (user) => {
                 <p className="text-red-500 text-sm">{errors.costPrice}</p>
               )}
             </div>
-
             <div>
               <label className="block font-medium">
-                Grade <span className="text-red-500">*</span>
+                Grade B <span className="text-red-500">*</span>
               </label>
-              <select
+              <input
+                type="number"
                 name="grade"
-                value={newPurchase.grade || ""} // Ensure `grade` is initialized
+                value={newPurchase.grade}
                 onChange={handleInputChange}
                 className={`w-full px-4 py-2 border rounded ${
                   errors.grade ? "border-red-500" : ""
                 }`}
                 required
-              >
-                <option value="" disabled>
-                  Select Grade
-                </option>
-                <option value="A">A</option>
-                <option value="B">B</option>
-              </select>
-              {errors.grade && <p className="text-red-500 text-sm">{errors.grade}</p>}
+              />
+              {errors.grade && (
+                <p className="text-red-500 text-sm">{errors.grade}</p>
+              )}
             </div>
+             
 
             
 

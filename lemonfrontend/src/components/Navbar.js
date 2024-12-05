@@ -48,7 +48,7 @@ const Navbar = ({ onLogout }) => {
             <Link to="/vendors/farmers" className="hover:text-black cursor-pointer">Farmers</Link>
           </li>
           <li className="hover:text-gray-200 cursor-pointer">
-            <Link to="/purchase" className="hover:text-black cursor-pointer">Purchase</Link>
+            <Link to="/purchase" className="hover:text-black cursor-pointer">Sales</Link>
           </li>
           <li className="hover:text-gray-200 cursor-pointer">
             <Link to="/costmanager" className="hover:text-black cursor-pointer">Charges</Link>
@@ -121,7 +121,7 @@ const Navbar = ({ onLogout }) => {
               </li>
               <li>
                 <Link to="/purchase" className="hover:text-gray-200 cursor-pointer" onClick={toggleSidebar}>
-                  Purchase
+                  Sales
                 </Link>
               </li>
               <li>
