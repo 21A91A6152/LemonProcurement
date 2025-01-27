@@ -138,7 +138,7 @@ const PurchaseDashboard = (user) => {
     // Assuming `validateForm()` is a function to validate the `newPurchase` fields
     if (validateForm(newPurchase)) {
       const response = await axios.post(
-        "http://localhost:5000/api/addpurchases",
+        "https://lemonprocurement.onrender.com/api/addpurchases",
         purchaseData
       );
 
